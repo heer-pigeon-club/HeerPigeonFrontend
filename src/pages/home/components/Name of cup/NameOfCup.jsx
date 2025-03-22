@@ -280,6 +280,7 @@ const NameOfCup = () => {
               <th>Picture</th>
               <th>Name</th>
               <th>Address</th>
+              <th>Start Time</th>
               {[...Array(maxPigeons).keys()].map((i) => (
                 <th key={i}>Pigeon {i + 1}</th>
               ))}
@@ -305,6 +306,37 @@ const NameOfCup = () => {
                   </td>
                   <td>{participant.name}</td>
                   <td>{participant.address}</td>
+                  <td>
+                    {selectedDate
+                      ? selectedDateFlights.length > 0
+                        ? selectedDateFlights.every(
+                            (flight) =>
+                              flight.startTime ===
+                              selectedDateFlights[0].startTime
+                          )
+                          ? new Date(
+                              `1970-01-01T${selectedDateFlights[0].startTime}`
+                            ).toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })
+                          : new Date(
+                              `1970-01-01T${
+                                selectedDateFlights.find(
+                                  (flight) =>
+                                    flight.startTime !==
+                                    selectedDateFlights[0].startTime
+                                )?.startTime || selectedDateFlights[0].startTime
+                              }`
+                            ).toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })
+                        : "N/A"
+                      : "N/A"}
+                  </td>
                   {[...Array(maxPigeons).keys()].map((i) => (
                     <td key={i}>
                       {selectedDate

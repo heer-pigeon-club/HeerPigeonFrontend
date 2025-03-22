@@ -84,11 +84,12 @@ const Persons = () => {
         setTournamentDates({
           startDate: data.startDate?.split("T")[0] || "",
           endDate: data.endDate?.split("T")[0] || "",
+          startTime: data.startTime, // Fetching start time
         });
       })
       .catch((error) => {
-        console.error("Error fetching tournament dates:", error);
-        setErrorMessage("Failed to fetch tournament dates.");
+        console.error("Error fetching tournament details:", error);
+        setErrorMessage("Failed to fetch tournament details.");
       });
   }, [tournamentId]);
 
@@ -112,7 +113,7 @@ const Persons = () => {
     setSelectedPerson(person);
     setSelectedDate("");
     setSelectedPigeon("");
-    setStartTime("");
+    setStartTime(tournamentDates.startTime); // Use tournament start time
     setEndTime("");
     setEditParticipant(true);
     setErrorMessage("");
@@ -135,7 +136,8 @@ const Persons = () => {
           setStartTime(data.startTime);
           setEndTime(data.endTime);
         } else {
-          setStartTime("");
+          // Set default start time to tournament's start time
+          setStartTime(tournamentDates.startTime);
           setEndTime("");
         }
       })

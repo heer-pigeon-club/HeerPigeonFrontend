@@ -161,6 +161,20 @@ const Tournament = () => {
               />
             </div>
             <div>
+              <h2>Start Time</h2>
+              <input
+                className={s.datesInput}
+                type="time"
+                onChange={(e) =>
+                  setNewTournament({
+                    ...newTournament,
+                    startTime: e.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <div>
               <h2>Enter No of Pigeons</h2>
               <input
                 className={s.datesInput}
@@ -315,6 +329,17 @@ const Tournament = () => {
                 value={editData.endDate}
                 onChange={(e) =>
                   setEditData({ ...editData, endDate: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <h2>Start Time</h2>
+              <input
+                className={s.datesInput}
+                type="time"
+                value={editData.startTime}
+                onChange={(e) =>
+                  setEditData({ ...editData, startTime: e.target.value })
                 }
               />
             </div>
