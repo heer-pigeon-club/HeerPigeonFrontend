@@ -1,0 +1,138 @@
+.container {
+  width: 100%;
+  height: auto;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.img {
+  width: 50px;
+  height: 50px;
+}
+
+.table {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.tournamenttable {
+  width: 100%;
+  height: auto;
+
+  background-color: #ced0d4;
+  font-size: 1.3rem;
+  border-collapse: separate;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.tournamenttable th,
+.tournamenttable td {
+  border: 1px solid white;
+  padding: 10px;
+  text-align: center;
+}
+
+.tournamenttable th {
+  background-color: black;
+  color: white;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 70%;
+  background-color: lightcoral;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 2rem;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+     z-index: 100;
+}
+.popup input {
+  width: 30%;
+  height: 1.5rem;
+  border: 1px solid black;
+}
+
+.button {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+  height: 2rem;
+  margin-top: 1rem;
+}
+.cancel {
+  width: 5rem;
+  border-radius: 2px;
+  border: none;
+  background-color: #ced0d4;
+  cursor: pointer;
+}
+.loft
+{
+  width: 5rem;
+  border-radius: 2px;
+  border: none;
+  background-color: rgb(232, 79, 79);
+  color: white;
+  cursor: pointer;
+}
+.save {
+  width: 5rem;
+  border-radius: 2px;
+  border: none;
+  background-color: #00b1fd;
+  color: white;
+  cursor: pointer;
+}
+
+.select {
+  width: 8rem;
+  height: 1.5rem;
+  border: 2px solid;
+  background-color: lightcoral;
+  color: white;
+}
+.inputs {
+  width: 30%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.dates {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 10px;
+  width: 20rem;
+}
+
+.dates h2 {
+  font-size: 16px;
+  color: #555;
+}
+
+.datesInput {
+  width: 12rem;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
