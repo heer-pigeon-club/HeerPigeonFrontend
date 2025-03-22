@@ -12,7 +12,10 @@ const NameOfCup = () => {
   const [news, setNews] = useState([]);
   const [sortedParticipants, setSortedParticipants] = useState([]);
   const [winner, setWinner] = useState(null);
+  const [secondWinner, setSecondWinner] = useState(null);
+
   const [maxPigeons, setMaxPigeons] = useState(0);
+  const [availableDates, setAvailableDates] = useState([]); // Change variable name
 
   useEffect(() => {
     fetchNews();
@@ -162,6 +165,7 @@ const NameOfCup = () => {
 
     setSortedParticipants(sorted);
     setWinner(sorted.length > 0 ? sorted[0] : null);
+    setSecondWinner(sorted.length > 1 ? sorted[1] : null);
   };
 
   const formatTime = (seconds) => {
@@ -169,25 +173,60 @@ const NameOfCup = () => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
-    return `${hours}h ${minutes}m ${secs}s`;
+    return `${hours}: ${minutes}: ${secs}`;
   };
 
   const getLastPigeonEndTime = (flights) => {
     if (!flights || flights.length === 0) return "N/A";
 
-    const lastPigeonFlight = flights.reduce((latest, flight) => {
+    // Group flights by date
+    const groupedFlights = {};
+    flights.forEach((flight) => {
+      const dateKey = new Date(flight.date).toISOString().split("T")[0]; // Format YYYY-MM-DD
+      if (!groupedFlights[dateKey]) groupedFlights[dateKey] = [];
+      groupedFlights[dateKey].push(flight);
+    });
+
+    // Get the last recorded date
+    const recordedDates = Object.keys(groupedFlights).sort(); // Sorting ensures last date is at the end
+    const lastDate =
+      recordedDates.length > 0 ? recordedDates[recordedDates.length - 1] : null;
+
+    if (!lastDate) return "N/A";
+
+    // Get the flights for the last recorded date
+    const lastDateFlights = groupedFlights[lastDate];
+
+    // Find the last pigeon end time on that date
+    const lastPigeonFlight = lastDateFlights.reduce((latest, flight) => {
       return flight.endTime > (latest?.endTime || "00:00:00") ? flight : latest;
     }, null);
 
-    if (!lastPigeonFlight?.endTime) return "N/A";
-
-    const [hours, minutes] = lastPigeonFlight.endTime.split(":").map(Number);
-
-    const period = hours >= 12 ? "PM" : "AM";
-    const formattedHours = hours % 12 || 12; // Convert 0 to 12 for AM format
-
-    return `${formattedHours}:${String(minutes).padStart(2, "0")} ${period}`;
+    return lastPigeonFlight?.endTime || "N/A";
   };
+
+  useEffect(() => {
+    if (!participants.length) return;
+
+    const uniqueDates = new Set();
+    participants.forEach((participant) => {
+      if (flightData[participant._id]) {
+        flightData[participant._id].forEach((flight) => {
+          uniqueDates.add(new Date(flight.date).toISOString().split("T")[0]);
+        });
+      }
+    });
+
+    const sortedDates = Array.from(uniqueDates).sort(
+      (a, b) => new Date(a) - new Date(b)
+    );
+
+    setAvailableDates(sortedDates); // Make sure this variable is correctly set
+
+    if (!selectedDate) {
+      setSelectedDate("total");
+    }
+  }, [participants, flightData]);
 
   return (
     <div className={s.container}>
@@ -217,38 +256,39 @@ const NameOfCup = () => {
             <>
               <h2>Select Date:</h2>
               <div className={s.dateButtons}>
-                {(() => {
-                  const tournament = tournaments.find(
-                    (t) => t._id === selectedTournament
-                  );
-                  if (!tournament) return null;
-
-                  const startDate = new Date(tournament.startDate);
-                  const endDate = new Date(tournament.endDate);
-                  const dateButtons = [];
-
-                  for (
-                    let d = new Date(startDate);
-                    d <= endDate;
-                    d.setDate(d.getDate() + 1)
-                  ) {
-                    const dateStr = d.toISOString().split("T")[0]; // Format YYYY-MM-DD
-                    dateButtons.push(
-                      <button
-                        key={dateStr}
-                        className={
-                          selectedDate === dateStr
-                            ? s.activeButton
-                            : s.dateButton
-                        }
-                        onClick={() => setSelectedDate(dateStr)}
-                      >
-                        {d.toDateString()}
-                      </button>
-                    );
+                {availableDates.length > 0 ? (
+                  availableDates.map((dateStr) => (
+                    <button
+                      key={dateStr}
+                      className={
+                        selectedDate === dateStr ? s.activeButton : s.dateButton
+                      }
+                      onClick={() => {
+                        setSelectedDate(dateStr);
+                        setWinner(null);
+                      }}
+                    >
+                      {new Date(dateStr).toDateString()}
+                    </button>
+                  ))
+                ) : (
+                  <p>No recorded dates available</p>
+                )}
+                <button
+                  className={
+                    selectedDate === "total" ? s.activeButton : s.dateButton
                   }
-                  return dateButtons;
-                })()}
+                  onClick={() => {
+                    setSelectedDate("total");
+                    setWinner(
+                      sortedParticipants.length > 0
+                        ? sortedParticipants[0]
+                        : null
+                    );
+                  }}
+                >
+                  Total
+                </button>
               </div>
             </>
           )}
@@ -263,13 +303,25 @@ const NameOfCup = () => {
         </div>
       </div>
 
-      {winner && (
-        <div className={s.winner}>
-          <h2>🏆 Winner</h2>
-          <p>
-            <strong>{winner.name}</strong> -{" "}
-            {getLastPigeonEndTime(winner.flights)}
-          </p>
+      {winner && selectedDate === "total" && (
+        <div className={s.winnerSection}>
+          <div className={s.winner}>
+            <h2>🏆 First Winner</h2>
+            <p>
+              <strong>{winner.name}</strong> -{" "}
+              {getLastPigeonEndTime(winner.flights)}
+            </p>
+          </div>
+
+          {secondWinner && (
+            <div className={s.secondWinner}>
+              <h2>🥈 Last Winner</h2>
+              <p>
+                <strong>{secondWinner.name}</strong> -{" "}
+                {getLastPigeonEndTime(secondWinner.flights)}
+              </p>
+            </div>
+          )}
         </div>
       )}
 
@@ -279,84 +331,115 @@ const NameOfCup = () => {
             <tr>
               <th>Picture</th>
               <th>Name</th>
-              <th>Address</th>
-              <th>Start Time</th>
-              {[...Array(maxPigeons).keys()].map((i) => (
-                <th key={i}>Pigeon {i + 1}</th>
-              ))}
-              <th>Total Time</th>
+              {selectedDate === "total" ? (
+                <>
+                  <th>Total Pigeons</th>
+                  {availableDates.map((date) => (
+                    <th key={date}>{date}</th>
+                  ))}
+                  <th>Total Flight Time</th>
+                </>
+              ) : (
+                <>
+                  <th>Start Time</th>
+                  {[...Array(maxPigeons).keys()].map((i) => (
+                    <th key={i}>Pigeon {i + 1}</th>
+                  ))}
+                  <th>Flight Time ({selectedDate})</th>
+                </>
+              )}
             </tr>
           </thead>
           <tbody>
             {sortedParticipants.map((participant) => {
               const flights = participant.flights || [];
-              const selectedDateFlights = flights.filter(
-                (f) =>
-                  selectedDate &&
-                  new Date(f.date).toISOString().split("T")[0] === selectedDate
-              );
 
-              return (
-                <tr key={participant._id}>
-                  <td className={s.img}>
-                    <img
-                      src={participant.imagePath}
-                      alt={participant.name || "Unknown"}
-                    />
-                  </td>
-                  <td>{participant.name}</td>
-                  <td>{participant.address}</td>
-                  <td>
-                    {selectedDate
-                      ? selectedDateFlights.length > 0
-                        ? selectedDateFlights.every(
-                            (flight) =>
-                              flight.startTime ===
-                              selectedDateFlights[0].startTime
-                          )
-                          ? new Date(
-                              `1970-01-01T${selectedDateFlights[0].startTime}`
-                            ).toLocaleTimeString("en-US", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              hour12: true,
-                            })
-                          : new Date(
-                              `1970-01-01T${
-                                selectedDateFlights.find(
-                                  (flight) =>
-                                    flight.startTime !==
-                                    selectedDateFlights[0].startTime
-                                )?.startTime || selectedDateFlights[0].startTime
-                              }`
-                            ).toLocaleTimeString("en-US", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              hour12: true,
-                            })
-                        : "N/A"
-                      : "N/A"}
-                  </td>
-                  {[...Array(maxPigeons).keys()].map((i) => (
-                    <td key={i}>
-                      {selectedDate
-                        ? selectedDateFlights[i]?.lofted
-                          ? "Lofted"
-                          : selectedDateFlights[i]?.endTime
-                          ? new Date(
-                              `1970-01-01T${selectedDateFlights[i].endTime}`
-                            ).toLocaleTimeString("en-US", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              hour12: true,
-                            })
-                          : "N/A"
-                        : "N/A"}
+              if (selectedDate === "total") {
+                // Calculate total pigeons and total flight time per date
+                const totalPigeons = new Set(
+                  participant.flights
+                    ?.filter((f) => f.flightTime) // Only count pigeons with recorded flight time
+                    .map((f) => f.pigeonNumber)
+                ).size;
+
+                const dateFlightTimes = availableDates.reduce((acc, date) => {
+                  acc[date] = flights
+                    .filter(
+                      (f) =>
+                        new Date(f.date).toISOString().split("T")[0] === date
+                    )
+                    .reduce(
+                      (sum, flight) =>
+                        sum + (parseFloat(flight.flightTime) || 0),
+                      0
+                    );
+                  return acc;
+                }, {});
+                const totalFlightTime = flights.reduce(
+                  (sum, flight) => sum + (parseFloat(flight.flightTime) || 0),
+                  0
+                );
+
+                return (
+                  <tr key={participant._id}>
+                    <td className={s.img}>
+                      <img
+                        src={participant.imagePath}
+                        alt={participant.name || "Unknown"}
+                      />
                     </td>
-                  ))}
-                  <td>{formatTime(participant.totalFlightTime)}</td>
-                </tr>
-              );
+                    <td>{participant.name}</td>
+                    <td>{totalPigeons}</td>
+                    {availableDates.map((date) => (
+                      <td key={date}>{formatTime(dateFlightTimes[date])}</td>
+                    ))}
+                    <td>{formatTime(totalFlightTime)}</td>
+                  </tr>
+                );
+              } else {
+                // Filter flights only for the selected date
+                const selectedFlights = flights.filter(
+                  (f) =>
+                    new Date(f.date).toISOString().split("T")[0] ===
+                    selectedDate
+                );
+                const startTime =
+                  selectedFlights.length > 0
+                    ? new Date(
+                        `1970-01-01T${selectedFlights[0]?.startTime}`
+                      ).toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false,
+                      })
+                    : "N/A";
+
+                const totalFlightTime = selectedFlights.reduce(
+                  (sum, flight) => sum + (parseFloat(flight.flightTime) || 0),
+                  0
+                );
+
+                return (
+                  <tr key={participant._id}>
+                    <td className={s.img}>
+                      <img
+                        src={participant.imagePath}
+                        alt={participant.name || "Unknown"}
+                      />
+                    </td>
+                    <td>{participant.name}</td>
+                    <td>{startTime}</td>
+                    {[...Array(maxPigeons).keys()].map((i) => (
+                      <td key={i}>
+                        {selectedFlights[i]?.lofted
+                          ? "Lofted"
+                          : selectedFlights[i]?.endTime || "N/A"}
+                      </td>
+                    ))}
+                    <td>{formatTime(totalFlightTime)}</td>
+                  </tr>
+                );
+              }
             })}
           </tbody>
         </table>
