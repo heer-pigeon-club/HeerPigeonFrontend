@@ -13,7 +13,7 @@ const NameOfCup = () => {
   const [sortedParticipants, setSortedParticipants] = useState([]);
   const [winner, setWinner] = useState(null);
   const [secondWinner, setSecondWinner] = useState(null);
-
+  const [allownumber, setAllowNumber] = useState(0);
   const [maxPigeons, setMaxPigeons] = useState(0);
   const [availableDates, setAvailableDates] = useState([]); // Change variable name
 
@@ -98,7 +98,7 @@ const NameOfCup = () => {
     const startDate = new Date(tournament.startDate);
     const endDate = new Date(tournament.endDate);
     const allowedPigeons = tournament.pigeons || 0;
-
+    setAllowNumber(allowedPigeons);
     const participantsWithTotalTime = participants.map((participant) => {
       const flights = flightData[participant._id] || [];
 
@@ -360,12 +360,6 @@ const NameOfCup = () => {
 
               if (selectedDate === "total") {
                 // Calculate total pigeons and total flight time per date
-                const totalPigeons = new Set(
-                  participant.flights
-                    ?.filter((f) => f.flightTime) // Only count pigeons with recorded flight time
-                    .map((f) => f.pigeonNumber)
-                ).size;
-
                 const dateFlightTimes = availableDates.reduce((acc, date) => {
                   acc[date] = flights
                     .filter(
@@ -393,7 +387,7 @@ const NameOfCup = () => {
                       />
                     </td>
                     <td>{participant.name}</td>
-                    <td>{totalPigeons}</td>
+                    <td>{allownumber - 1}</td>
                     {availableDates.map((date) => (
                       <td key={date}>{formatTime(dateFlightTimes[date])}</td>
                     ))}
