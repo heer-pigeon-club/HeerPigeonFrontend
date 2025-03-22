@@ -1,3 +1,4 @@
+import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
 import { IoIosPeople } from "react-icons/io";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
@@ -57,6 +58,10 @@ const Tournament = () => {
     await axios.post("http://localhost:5001/api/tournaments", newTournament);
     fetchTournaments();
     addTournament(false);
+  };
+  const handlePinTournament = async (id) => {
+    await axios.put(`http://localhost:5001/api/tournaments/${id}/pin`);
+    fetchTournaments();
   };
 
   const handleEditTournament = async () => {
@@ -259,6 +264,7 @@ const Tournament = () => {
               <th>Edit</th>
               <th>Remove</th>
               <th>Details</th>
+              <th>Pin</th>
             </tr>
           </thead>
           <tbody>
@@ -288,6 +294,19 @@ const Tournament = () => {
                   <NavLink to={`/tournament/${tournament._id}/participants`}>
                     <IoIosPeople className={s.addperson} />
                   </NavLink>
+                </td>
+                <td>
+                  {tournament.pinned ? (
+                    <AiFillPushpin
+                      className={s.pinned}
+                      onClick={() => handlePinTournament(tournament._id)}
+                    />
+                  ) : (
+                    <AiOutlinePushpin
+                      className={s.unpinned}
+                      onClick={() => handlePinTournament(tournament._id)}
+                    />
+                  )}
                 </td>
               </tr>
             ))}

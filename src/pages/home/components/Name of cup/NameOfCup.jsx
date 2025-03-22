@@ -53,6 +53,10 @@ const NameOfCup = () => {
     try {
       const res = await axios.get("http://localhost:5001/api/tournaments");
       setTournaments(res.data);
+      const pinnedTournament = res.data.find((tournament) => tournament.pinned);
+      if (pinnedTournament) {
+        setSelectedTournament(pinnedTournament._id);
+      }
     } catch (err) {
       console.error("Error fetching tournaments", err);
     }
