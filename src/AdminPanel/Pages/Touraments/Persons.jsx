@@ -4,9 +4,7 @@ import { useParams } from "react-router-dom";
 import style from "./person.module.css";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
-
 const s = style;
-
 const Persons = () => {
   const { id: tournamentId } = useParams();
   const [participants, setParticipants] = useState([]);
@@ -22,7 +20,6 @@ const Persons = () => {
     startDate: "",
     endDate: "",
   });
-
   const loftPigeon = async () => {
     if (!selectedPigeon) {
       setErrorMessage("Please select a pigeon.");
@@ -32,7 +29,6 @@ const Persons = () => {
       setErrorMessage("Please select a date.");
       return;
     }
-
     try {
       await axios.post(
         `http://localhost:5001/api/participants/${selectedPerson._id}/flight`,
@@ -42,7 +38,6 @@ const Persons = () => {
           lofted: true, // ✅ Added lofted flag
         }
       );
-
       setParticipants((prev) =>
         prev.map((p) =>
           p._id === selectedPerson._id
@@ -66,18 +61,15 @@ const Persons = () => {
             : p
         )
       );
-
       setEditParticipant(false);
     } catch (error) {
       console.error("Error lofting pigeon:", error);
       setErrorMessage("Failed to mark pigeon as lofted.");
     }
   };
-
   // Fetch tournament details (start & end date)
   useEffect(() => {
     if (!tournamentId) return;
-
     axios
       .get(`http://localhost:5001/api/tournaments/${tournamentId}`)
       .then(({ data }) => {
@@ -92,11 +84,9 @@ const Persons = () => {
         setErrorMessage("Failed to fetch tournament details.");
       });
   }, [tournamentId]);
-
   // Fetch participants of the tournament
   useEffect(() => {
     if (!tournamentId) return;
-
     setLoading(true);
     axios
       .get(`http://localhost:5001/api/tournaments/${tournamentId}/participants`)
@@ -107,7 +97,6 @@ const Persons = () => {
       })
       .finally(() => setLoading(false));
   }, [tournamentId]);
-
   // Open edit form
   const handleEdit = (person) => {
     setSelectedPerson(person);
@@ -118,11 +107,9 @@ const Persons = () => {
     setEditParticipant(true);
     setErrorMessage("");
   };
-
   // Fetch flight data when date or pigeon changes
   useEffect(() => {
     if (!selectedPerson || !selectedDate || !selectedPigeon) return;
-
     axios
       .get(
         `http://localhost:5001/api/participants/${selectedPerson._id}/flight`,
@@ -146,7 +133,6 @@ const Persons = () => {
         setErrorMessage("Failed to fetch flight data.");
       });
   }, [selectedDate, selectedPigeon, selectedPerson]);
-
   // Delete participant
   const deleteParticipant = async (id) => {
     try {
@@ -157,7 +143,6 @@ const Persons = () => {
       setErrorMessage("Error deleting participant. Please try again.");
     }
   };
-
   // Save pigeon flight data
   const savePigeonData = async () => {
     if (!selectedPigeon) {
@@ -174,13 +159,11 @@ const Persons = () => {
       );
       return;
     }
-
     try {
       const { data } = await axios.post(
         `http://localhost:5001/api/participants/${selectedPerson._id}/flight`,
         { date: selectedDate, pigeon: selectedPigeon, startTime, endTime }
       );
-
       setParticipants((prev) =>
         prev.map((p) =>
           p._id === selectedPerson._id
@@ -197,14 +180,12 @@ const Persons = () => {
             : p
         )
       );
-
       setEditParticipant(false);
     } catch (error) {
       console.error("Error saving flight data:", error);
       setErrorMessage("Failed to save flight data. Please try again.");
     }
   };
-
   return (
     <div className={s.container}>
       <div className={s.table}>
@@ -265,7 +246,6 @@ const Persons = () => {
           </tbody>
         </table>
       </div>
-
       {/* Edit Participant Popup */}
       {editParticipant && selectedPerson && (
         <div className={s.popup}>
@@ -274,7 +254,6 @@ const Persons = () => {
           <h3>Select Date</h3>
           <input
             type="date"
-            value={selectedDate}
             min={tournamentDates.startDate}
             max={tournamentDates.endDate}
             onChange={(e) => setSelectedDate(e.target.value)}
@@ -335,7 +314,6 @@ const Persons = () => {
                 Mark as Lofted
               </button>
             )}
-
             <button
               className={s.cancel}
               onClick={() => setEditParticipant(false)}
@@ -351,5 +329,4 @@ const Persons = () => {
     </div>
   );
 };
-
 export default Persons;
