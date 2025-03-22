@@ -341,7 +341,7 @@ const NameOfCup = () => {
                   {availableDates.map((date) => (
                     <th key={date}>{date}</th>
                   ))}
-                  <th>Total Flight Time</th>
+                  <th>Total Time</th>
                 </>
               ) : (
                 <>

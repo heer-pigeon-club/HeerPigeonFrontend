@@ -14,7 +14,7 @@ const Contact = () => {
           <div className={s.LeftBox}>
             <a
               className={s.logo}
-              href="https://www.facebook.com"
+              href="https:///www.facebook.com/share/15qhz9bs2j/?mibextid=wwXIfr"
               target="blank"
             >
               <FaFacebookSquare />
@@ -24,12 +24,12 @@ const Contact = () => {
           <div className={s.RightBox}>
             <a
               className={s.logo}
-              href="https://wa.me/923408432739"
+              href="https://wa.me/393295372043"
               target="blank"
             >
               <AiOutlineWhatsApp />
             </a>
-            <h1 className={s.wanumber}>03408432739</h1>
+            <h1 className={s.wanumber}>393295372043</h1>
           </div>
         </div>
       </div>
