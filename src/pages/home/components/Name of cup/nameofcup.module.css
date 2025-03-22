@@ -1,44 +1,49 @@
+/* General Styles */
 .container {
-  max-width: 1400px;
+  max-width: 95%;
   margin: 20px auto;
   padding: 20px;
-  
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
 }
-.newsbox
-{
-width: 20%;
-height: 100%;
-background-color: lightcoral;
-border-radius: 2rem;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-background-color: #3a3a3a;
-color: whitesmoke;
+
+/* News Box */
+.newsbox {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  background-color: #3a3a3a;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: whitesmoke;
+  padding: 20px;
 }
+
+/* Controls Section */
 .controls {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  height: 30vh;
+  min-height: 20vh;
   gap: 15px;
   align-items: center;
   justify-content: center;
-
 }
-.selecting
-{
+
+.selecting {
   border: 2px solid black;
   border-radius: 2rem;
-  width: 60%;
-  height: 100%;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 20px;
 }
 
 .controls label {
@@ -49,17 +54,20 @@ color: whitesmoke;
 
 .controls select,
 .controls input {
-  width: 50%;
+  width: 100%;
+  max-width: 300px;
   padding: 8px;
   font-size: 14px;
   border: 1px solid #444;
   border-radius: 5px;
 }
 
+/* Responsive Table */
 .table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  overflow-x: auto;
 }
 
 .table th,
@@ -78,18 +86,18 @@ color: whitesmoke;
 .table td {
   background-color: #D9D9D9;
   font-size: 14px;
-  
 }
 
 .table img {
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(255, 255, 255, 0.2);
 }
-.nameOfPerson
-{
+
+.nameOfPerson {
   width: 5rem;
 }
-.img{
+
+.img {
   width: 2rem;
   height: 2rem;
 }
@@ -98,19 +106,20 @@ color: whitesmoke;
   background-color: #3a3a3a;
   transition: 0.3s;
 }
-.img img
-{
+
+.img img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.participant
-{
+.participant {
   width: 100%;
   height: auto;
   background-color: lightcoral;
-}  
+}
+
+/* Buttons */
 .dateButtons {
   display: flex;
   flex-wrap: wrap;
@@ -137,19 +146,60 @@ color: whitesmoke;
   font-weight: bold;
 }
 
+/* Media Queries for Different Screens */
 
-@media (max-width: 768px) {
+/* 📱 Mobile (up to 600px) */
+@media (max-width: 600px) {
+  .newsbox {
+    width: 90%;
+    padding: 15px;
+  }
   .controls {
     flex-direction: column;
-    align-items: flex-start;
+    height: auto;
   }
-
-  .table {
-    font-size: 12px;
+  .selecting {
+    width: 90%;
+    padding: 15px;
   }
-
   .table th,
   .table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+  .img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+/* 📟 Tablets (600px - 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    max-width: 90%;
+  }
+  .newsbox {
+    width: 50%;
+  }
+  .selecting {
+    width: 80%;
+  }
+  .table th,
+  .table td {
+    font-size: 14px;
     padding: 8px;
+  }
+}
+
+/* 🖥️ Large Screens (above 1024px) */
+@media (min-width: 1025px) {
+  .container {
+    max-width: 1400px;
+  }
+  .newsbox {
+    width: 20%;
+  }
+  .selecting {
+    width: 60%;
   }
 }

@@ -1,3 +1,4 @@
+/* Main Container */
 .container {
   width: 80%;
   height: auto;
@@ -7,6 +8,7 @@
   flex-direction: column;
 }
 
+/* Top Bar */
 .top {
   width: 100%;
   height: 5rem;
@@ -15,14 +17,30 @@
   justify-content: space-around;
   align-items: center;
   color: white;
+  padding: 0 10px;
 }
 
+/* Add Button */
 .add {
   width: 20%;
   height: 80%;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid black;
+  transition: 0.3s;
 }
 
+.add:hover {
+  background-color: black;
+  color: white;
+}
+
+/* Table Container */
 .table {
   width: 100%;
   height: auto;
@@ -32,10 +50,9 @@
   margin-bottom: 2rem;
 }
 
+/* Post Table */
 .posttable {
   width: 100%;
-  height: auto;
-
   background-color: #ced0d4;
   font-size: 1.3rem;
   border-collapse: separate;
@@ -54,21 +71,42 @@
   background-color: black;
   color: white;
 }
+
+/* Icons for Add, Edit, Remove */
 .addperson {
   font-size: 1.6rem;
   color: black;
   cursor: pointer;
+  transition: 0.3s;
 }
+
+.addperson:hover {
+  color: green;
+}
+
 .edit {
   font-size: 1.6rem;
   color: rgb(81, 81, 223);
   cursor: pointer;
+  transition: 0.3s;
 }
+
+.edit:hover {
+  color: darkblue;
+}
+
 .remove {
   font-size: 1.6rem;
   color: red;
   cursor: pointer;
+  transition: 0.3s;
 }
+
+.remove:hover {
+  color: darkred;
+}
+
+/* Upload Photo Modal */
 .uploadPhoto {
   position: fixed;
   top: 50%;
@@ -85,18 +123,10 @@
   border-radius: 2rem;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   z-index: 100;
-}
-.fileInput {
-  width: 80%;
-  display: flex;
-  height: 1rem;
-  margin-bottom: 1rem;
-}
-.uploadPhoto h1 {
-  font-size: 2rem;
-  font-weight: 600;
+  padding: 20px;
 }
 
+/* File Input */
 .fileInput {
   width: 80%;
   padding: 10px;
@@ -106,11 +136,24 @@
   color: #ffffff;
   cursor: pointer;
   outline: none;
+  font-size: 1rem;
+  text-align: center;
 }
 
+.fileInput:hover {
+  background: #444;
+}
+
+/* Upload Heading */
+.uploadPhoto h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Upload Button */
 .uploadButton {
   width: 30%;
-  height: fit-content;
   padding: 0.7rem;
   background-color: black;
   color: white;
@@ -118,4 +161,70 @@
   cursor: pointer;
   border-radius: 1rem;
   margin-top: 1rem;
+  border: none;
+  transition: 0.3s;
+}
+
+.uploadButton:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+/* 📱 Mobile (up to 600px) */
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+
+  .top {
+    height: auto;
+    padding: 1rem 0;
+    text-align: center;
+  }
+
+  .add {
+    width: 20%;
+    height: 3rem;
+  }
+
+  .posttable {
+    font-size: 1rem;
+  }
+
+  .uploadPhoto {
+    width: 90%;
+  }
+
+  .fileInput {
+    width: 100%;
+  }
+
+  .uploadButton {
+    width: 50%;
+    font-size: 1.2rem;
+  }
+}
+
+/* 📟 Tablets (601px - 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    width: 85%;
+  }
+
+  .uploadPhoto {
+    width: 70%;
+  }
+
+  .uploadButton {
+    width: 40%;
+  }
+}
+
+/* 🖥️ Large Screens (above 1024px) */
+@media (min-width: 1025px) {
+  .container {
+    width: 80%;
+    max-width: 1400px;
+  }
 }

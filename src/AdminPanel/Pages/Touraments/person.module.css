@@ -1,3 +1,4 @@
+/* Main Container */
 .container {
   width: 100%;
   height: auto;
@@ -7,24 +8,25 @@
   flex-direction: column;
 }
 
+/* Image Styling */
 .img {
   width: 50px;
   height: 50px;
+  object-fit: cover;
 }
 
+/* Table Container */
 .table {
   width: 100%;
-  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 2rem;
 }
 
+/* Tournament Table */
 .tournamenttable {
   width: 100%;
-  height: auto;
-
   background-color: #ced0d4;
   font-size: 1.3rem;
   border-collapse: separate;
@@ -44,6 +46,7 @@
   color: white;
 }
 
+/* Popup Modal */
 .popup {
   position: fixed;
   top: 50%;
@@ -51,7 +54,6 @@
   transform: translate(-50%, -50%);
   width: 50%;
   height: 70%;
-  background-color: lightcoral;
   background-color: white;
   display: flex;
   justify-content: center;
@@ -59,14 +61,20 @@
   flex-direction: column;
   border-radius: 2rem;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
-     z-index: 100;
-}
-.popup input {
-  width: 30%;
-  height: 1.5rem;
-  border: 1px solid black;
+  z-index: 100;
+  padding: 20px;
 }
 
+/* Popup Input */
+.popup input {
+  width: 100%;
+  max-width: 300px;
+  height: 1.5rem;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+/* Button Container */
 .button {
   display: flex;
   justify-content: space-between;
@@ -74,40 +82,53 @@
   height: 2rem;
   margin-top: 1rem;
 }
+
+/* Cancel Button */
 .cancel {
   width: 5rem;
-  border-radius: 2px;
+  border-radius: 5px;
   border: none;
   background-color: #ced0d4;
   cursor: pointer;
+  padding: 5px;
 }
-.loft
-{
+
+/* Loft Button */
+.loft {
   width: 5rem;
-  border-radius: 2px;
+  border-radius: 5px;
   border: none;
   background-color: rgb(232, 79, 79);
   color: white;
   cursor: pointer;
+  padding: 5px;
 }
+
+/* Save Button */
 .save {
   width: 5rem;
-  border-radius: 2px;
+  border-radius: 5px;
   border: none;
   background-color: #00b1fd;
   color: white;
   cursor: pointer;
+  padding: 5px;
 }
 
+/* Select Dropdown */
 .select {
   width: 8rem;
   height: 1.5rem;
-  border: 2px solid;
+  border: 2px solid black;
   background-color: lightcoral;
   color: white;
+  text-align: center;
 }
+
+/* Form Inputs */
 .inputs {
-  width: 30%;
+  width: 100%;
+  max-width: 300px;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -115,24 +136,92 @@
   font-size: 16px;
 }
 
+/* Date Inputs Container */
 .dates {
   display: flex;
   justify-content: center;
   align-items: center;
   justify-content: space-evenly;
   margin-top: 10px;
-  width: 20rem;
+  width: 100%;
+  max-width: 20rem;
 }
 
+/* Date Label */
 .dates h2 {
   font-size: 16px;
   color: #555;
 }
 
+/* Date Input */
 .datesInput {
-  width: 12rem;
+  width: 100%;
+  max-width: 12rem;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
+}
+
+/* 📱 Mobile (up to 600px) */
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+
+  .table {
+    flex-direction: column;
+  }
+
+  .popup {
+    width: 90%;
+    height: auto;
+    padding: 15px;
+  }
+
+  .popup input,
+  .inputs,
+  .datesInput {
+    width: 100%;
+  }
+
+  .button {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .select {
+    width: 100%;
+  }
+
+  .dates {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* 📟 Tablets (601px - 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    width: 85%;
+  }
+
+  .popup {
+    width: 70%;
+    height: auto;
+  }
+
+  .button {
+    width: 60%;
+  }
+}
+
+/* 🖥️ Large Screens (above 1024px) */
+@media (min-width: 1025px) {
+  .container {
+    width: 80%;
+    max-width: 1400px;
+  }
 }
