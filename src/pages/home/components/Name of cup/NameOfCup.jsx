@@ -172,6 +172,23 @@ const NameOfCup = () => {
     return `${hours}h ${minutes}m ${secs}s`;
   };
 
+  const getLastPigeonEndTime = (flights) => {
+    if (!flights || flights.length === 0) return "N/A";
+
+    const lastPigeonFlight = flights.reduce((latest, flight) => {
+      return flight.endTime > (latest?.endTime || "00:00:00") ? flight : latest;
+    }, null);
+
+    if (!lastPigeonFlight?.endTime) return "N/A";
+
+    const [hours, minutes] = lastPigeonFlight.endTime.split(":").map(Number);
+
+    const period = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 || 12; // Convert 0 to 12 for AM format
+
+    return `${formattedHours}:${String(minutes).padStart(2, "0")} ${period}`;
+  };
+
   return (
     <div className={s.container}>
       <div className={s.controls}>
@@ -199,18 +216,40 @@ const NameOfCup = () => {
           {selectedTournament && (
             <>
               <h2>Select Date:</h2>
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                min={
-                  tournaments.find((t) => t._id === selectedTournament)
-                    ?.startDate
-                }
-                max={
-                  tournaments.find((t) => t._id === selectedTournament)?.endDate
-                }
-              />
+              <div className={s.dateButtons}>
+                {(() => {
+                  const tournament = tournaments.find(
+                    (t) => t._id === selectedTournament
+                  );
+                  if (!tournament) return null;
+
+                  const startDate = new Date(tournament.startDate);
+                  const endDate = new Date(tournament.endDate);
+                  const dateButtons = [];
+
+                  for (
+                    let d = new Date(startDate);
+                    d <= endDate;
+                    d.setDate(d.getDate() + 1)
+                  ) {
+                    const dateStr = d.toISOString().split("T")[0]; // Format YYYY-MM-DD
+                    dateButtons.push(
+                      <button
+                        key={dateStr}
+                        className={
+                          selectedDate === dateStr
+                            ? s.activeButton
+                            : s.dateButton
+                        }
+                        onClick={() => setSelectedDate(dateStr)}
+                      >
+                        {d.toDateString()}
+                      </button>
+                    );
+                  }
+                  return dateButtons;
+                })()}
+              </div>
             </>
           )}
         </div>
@@ -229,7 +268,7 @@ const NameOfCup = () => {
           <h2>🏆 Winner</h2>
           <p>
             <strong>{winner.name}</strong> -{" "}
-            {formatTime(winner.totalFlightTime)}
+            {getLastPigeonEndTime(winner.flights)}
           </p>
         </div>
       )}
@@ -271,7 +310,15 @@ const NameOfCup = () => {
                       {selectedDate
                         ? selectedDateFlights[i]?.lofted
                           ? "Lofted"
-                          : formatTime(selectedDateFlights[i]?.flightTime)
+                          : selectedDateFlights[i]?.endTime
+                          ? new Date(
+                              `1970-01-01T${selectedDateFlights[i].endTime}`
+                            ).toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })
+                          : "N/A"
                         : "N/A"}
                     </td>
                   ))}
