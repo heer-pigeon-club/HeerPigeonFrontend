@@ -40,7 +40,7 @@ const News = () => {
 
   const togglePublish = async (id) => {
     try {
-      await axios.put(`${API_BASE_URL}api/news/${id}/toggle-publish`);
+      await axios.put(`${API_BASE_URL}/api/news/${id}/toggle-publish`);
       fetchNews();
     } catch (err) {
       console.error("Error toggling publish status", err);
