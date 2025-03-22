@@ -6,6 +6,7 @@ import { MdOutlineDone, MdDelete } from "react-icons/md";
 import { ImCross } from "react-icons/im";
 
 const s = style;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const News = () => {
   const [add, setAdd] = useState(false);
@@ -18,7 +19,7 @@ const News = () => {
 
   const fetchNews = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/api/news");
+      const res = await axios.get(`${API_BASE_URL}/api/news`);
       setData(res.data);
     } catch (err) {
       console.error("Error fetching news", err);
@@ -28,7 +29,7 @@ const News = () => {
   const saveNews = async () => {
     if (!newsText.trim()) return;
     try {
-      await axios.post("http://localhost:5001/api/news", { text: newsText });
+      await axios.post(`${API_BASE_URL}/api/news`, { text: newsText });
       setNewsText("");
       setAdd(false);
       fetchNews();
@@ -39,7 +40,7 @@ const News = () => {
 
   const togglePublish = async (id) => {
     try {
-      await axios.put(`http://localhost:5001/api/news/${id}/toggle-publish`);
+      await axios.put(`${API_BASE_URL}api/news/${id}/toggle-publish`);
       fetchNews();
     } catch (err) {
       console.error("Error toggling publish status", err);
@@ -48,7 +49,7 @@ const News = () => {
 
   const deleteNews = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/api/news/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/news/${id}`);
       fetchNews();
     } catch (err) {
       console.error("Error deleting news", err);
