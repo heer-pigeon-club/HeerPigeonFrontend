@@ -1,3 +1,4 @@
+/* 🌟 Main Container */
 .container {
   width: 80%;
   height: auto;
@@ -7,6 +8,7 @@
   flex-direction: column;
 }
 
+/* 🔝 Top Navigation Bar */
 .top {
   width: 100%;
   height: 5rem;
@@ -17,12 +19,27 @@
   color: white;
 }
 
+/* ➕ Add Button */
 .add {
   width: 20%;
   height: 80%;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid black;
+  transition: 0.3s;
 }
 
+.add:hover {
+  background-color: black;
+  color: white;
+}
+
+/* 📊 Table Container */
 .table {
   width: 100%;
   height: auto;
@@ -32,10 +49,9 @@
   margin-bottom: 2rem;
 }
 
+/* 🏆 Tournament Table */
 .tournamenttable {
   width: 100%;
-  height: auto;
-
   background-color: #ced0d4;
   font-size: 1.3rem;
   border-collapse: separate;
@@ -54,22 +70,42 @@
   background-color: black;
   color: white;
 }
+
+/* 🛠️ Action Icons */
 .addperson {
   font-size: 1.6rem;
   color: black;
   cursor: pointer;
+  transition: 0.3s;
 }
+
+.addperson:hover {
+  color: green;
+}
+
 .edit {
   font-size: 1.6rem;
   color: rgb(81, 81, 223);
   cursor: pointer;
+  transition: 0.3s;
 }
+
+.edit:hover {
+  color: darkblue;
+}
+
 .remove {
   font-size: 1.6rem;
   color: red;
   cursor: pointer;
+  transition: 0.3s;
 }
 
+.remove:hover {
+  color: darkred;
+}
+
+/* 📰 Add News Modal */
 .addNews {
   position: fixed;
   top: 50%;
@@ -86,6 +122,8 @@
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   z-index: 100;
 }
+
+/* ✍️ Write News Box */
 .writeNews {
   width: 80%;
   height: 80%;
@@ -95,9 +133,10 @@
   font-size: 1.5rem;
   resize: none;
 }
+
+/* 💾 Save News Button */
 .saveNews {
   width: 20%;
-  height: fit-content;
   padding: 0.7rem;
   background-color: black;
   color: white;
@@ -105,7 +144,16 @@
   cursor: pointer;
   border-radius: 1rem;
   margin-top: 1rem;
+  transition: 0.3s;
 }
+
+.saveNews:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+/* ✅ Publish, Unpublish, and Delete Buttons */
 .publish,
 .unpublish,
 .delete {
@@ -122,6 +170,80 @@
   color: #28a745;
 }
 
+.publish:hover {
+  color: #1f7a34;
+}
+
 .unpublish {
   color: #dc3545;
+}
+
+.unpublish:hover {
+  color: #a71d2a;
+}
+
+.delete {
+  color: #ff0000;
+}
+
+.delete:hover {
+  color: #b30000;
+}
+
+/* 📱 Mobile (up to 600px) */
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+
+  .top {
+    height: auto;
+    padding: 1rem 0;
+    text-align: center;
+  }
+
+  .add {
+    width: 20%;
+    height: 3rem;
+  }
+
+  .tournamenttable {
+    font-size: 1rem;
+  }
+
+  .addNews {
+    width: 90%;
+  }
+
+  .writeNews {
+    width: 90%;
+  }
+
+  .saveNews {
+    width: 50%;
+    font-size: 1.2rem;
+  }
+}
+
+/* 📟 Tablets (601px - 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    width: 85%;
+  }
+
+  .addNews {
+    width: 70%;
+  }
+
+  .saveNews {
+    width: 40%;
+  }
+}
+
+/* 🖥️ Large Screens (above 1024px) */
+@media (min-width: 1025px) {
+  .container {
+    width: 80%;
+    max-width: 1400px;
+  }
 }
