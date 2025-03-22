@@ -105,21 +105,6 @@ color: whitesmoke;
   object-fit: contain;
 }
 
-@media (max-width: 768px) {
-  .controls {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .table {
-    font-size: 12px;
-  }
-
-  .table th,
-  .table td {
-    padding: 8px;
-  }
-}
 .participant
 {
   width: 100%;
@@ -150,4 +135,21 @@ color: whitesmoke;
   background-color: #007bff;
   color: white;
   font-weight: bold;
+}
+
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+  }
 }
