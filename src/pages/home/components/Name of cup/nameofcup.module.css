@@ -18,7 +18,7 @@
     align-items: center;
     color: whitesmoke;
     padding: 20px;
-  }
+  } 
 
   .controls {
     display: flex;
@@ -143,9 +143,7 @@
     font-weight: bold;
   }
 
-  /* Media Queries for Different Screens */
 
-  /* 📱 Mobile (up to 600px) */
   @media (max-width: 600px) {
     .newsbox {
       width: 90%;
@@ -170,7 +168,6 @@
     }
   }
 
-  /* 📟 Tablets (600px - 1024px) */
   @media (min-width: 601px) and (max-width: 1024px) {
     .container {
       max-width: 90%;
@@ -188,7 +185,6 @@
     }
   }
 
-  /* 🖥️ Large Screens (above 1024px) */
   @media (min-width: 1025px) {
     .container {
       max-width: 1400px;

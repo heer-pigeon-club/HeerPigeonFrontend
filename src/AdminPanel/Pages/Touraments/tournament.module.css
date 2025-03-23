@@ -262,14 +262,20 @@
   }
 }
 
-/* Small Mobile */
 @media (max-width: 480px) {
+  
+  .top
+  {
+      width: 90%;
+      border-radius: 2rem;
+  }
+  
   .tournamenttable {
-    font-size: 0.8rem;
+    font-size: 0.5rem;
   }
 
   .popup {
-    width: 95%;
+    width: 80%;
     height: auto;
   }
 
@@ -290,35 +296,4 @@
     text-align: center;
   }
 }
-@media (max-width: 480px) {
-  .container
-  {
-  }
-  .top
-{
-    width: 90%;
-    border-radius: 2rem;
-}
-  .tournamenttable {
-    font-size: 0.6rem;
-    width: 80%;
-  }
 
-  .popup {
-    width: 95%;
-    height: auto;
-  }
-
-  .addingPersonInputs, .dates {
-    width: 100%;
-  }
-
-  .button {
-    width: 70%;
-  }
-
-  .uploadButton {
-    width: 100%;
-    text-align: center;
-  }
-}
