@@ -9,7 +9,7 @@ const s = style
 const Admin = () => {
   return (
     <div className={s.admin}>
-      
+      <Navbar/>
       <Tournament/>
       <News/>
       <Post/>

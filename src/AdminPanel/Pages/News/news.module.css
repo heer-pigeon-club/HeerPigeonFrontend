@@ -200,6 +200,7 @@
     height: auto;
     padding: 1rem 0;
     text-align: center;
+    border-radius: 2rem;
   }
 
   .add {
@@ -245,5 +246,6 @@
   .container {
     width: 80%;
     max-width: 1400px;
+    
   }
 }

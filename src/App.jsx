@@ -12,7 +12,6 @@ import AdminNavbar from "./AdminPanel/Navbar";
 function App() {
   return (
     <BrowserRouter>
-      <AdminNavbar />
       <Routes>
         <Route path="/admin" element={<Admin />} />
         <Route path="/tournament/:id/participants" element={<Persons />} />
