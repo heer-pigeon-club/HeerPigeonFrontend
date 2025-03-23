@@ -8,14 +8,22 @@ import Contact from "./pages/Contact/Contact";
 import Events from "./pages/home/components/Events/Events";
 import Admin from "./AdminPanel/Admin";
 import Persons from "./AdminPanel/Pages/Touraments/Persons";
-import AdminNavbar from "./AdminPanel/Navbar";
+import Login from "./AdminPanel/Pages/Login/Login";
+import PrivateRoute from './AdminPanel/Pages/Login/PrivateRoute'
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/admin" element={<Admin />} />
+      <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <Admin />
+            </PrivateRoute>
+          }
+        />
         <Route path="/tournament/:id/participants" element={<Persons />} />
-
+        <Route path="/login" element={<Login/>}/>
         <Route
           path="/*"
           element={

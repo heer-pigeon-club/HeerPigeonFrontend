@@ -12,7 +12,6 @@ const Post = () => {
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
 
-  // Fetch posts from backend
   useEffect(() => {
     axios
       .get(`${API_BASE_URL}/api/posts`)
