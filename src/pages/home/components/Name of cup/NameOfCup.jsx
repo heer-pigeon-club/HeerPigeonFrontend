@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import style from "./nameofcup.module.css";
 const s = style;
-
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const NameOfCup = () => {
   const [tournaments, setTournaments] = useState([]);
   const [selectedTournament, setSelectedTournament] = useState("");
@@ -42,7 +42,7 @@ const NameOfCup = () => {
 
   const fetchNews = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/api/news");
+      const res = await axios.get(`${API_BASE_URL}/api/news`);
       setNews(res.data.filter((item) => item.published));
     } catch (err) {
       console.error("Error fetching news", err);
@@ -51,7 +51,7 @@ const NameOfCup = () => {
 
   const fetchTournaments = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/api/tournaments");
+      const res = await axios.get(`${API_BASE_URL}/api/tournaments`);
       setTournaments(res.data);
       const pinnedTournament = res.data.find((tournament) => tournament.pinned);
       if (pinnedTournament) {
@@ -65,7 +65,7 @@ const NameOfCup = () => {
   const fetchParticipants = async (tournamentId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/api/tournaments/${tournamentId}/participants`
+        `${API_BASE_URL}/api/tournaments/${tournamentId}/participants`
       );
       setParticipants(res.data);
     } catch (err) {
@@ -76,7 +76,7 @@ const NameOfCup = () => {
   const fetchFlightData = async (participantId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/api/participants/${participantId}/flights`
+        `${API_BASE_URL}/api/participants/${participantId}/flights`
       );
 
       if (res.data.flightData) {

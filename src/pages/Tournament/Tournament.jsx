@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./Tournament.module.css";
-
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const Tournament = () => {
   const [data, setData] = useState([]);
 
@@ -9,7 +9,7 @@ const Tournament = () => {
     fetchTournaments();
   }, []);
   const fetchTournaments = async () => {
-    const response = await axios.get("http://localhost:5001/api/tournaments");
+    const response = await axios.get(`${API_BASE_URL}/api/tournaments`);
     setData(response.data);
   };
   return (

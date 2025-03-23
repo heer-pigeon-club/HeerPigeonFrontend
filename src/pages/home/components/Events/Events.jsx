@@ -3,7 +3,7 @@ import style from "./events.module.css";
 import axios from "axios";
 
 const s = style;
-
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const Events = () => {
   const [posts, setPosts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,7 +13,7 @@ const Events = () => {
   // Fetch posts from backend
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/posts")
+      .get(`${API_BASE_URL}/api/posts`)
       .then((res) => setPosts(res.data))
       .catch((err) => console.log(err));
   }, []);

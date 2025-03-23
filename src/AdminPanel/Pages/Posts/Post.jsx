@@ -5,7 +5,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { FaMinusCircle } from "react-icons/fa";
 
 const s = style;
-
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const Post = () => {
   const [add, setAdd] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -15,7 +15,7 @@ const Post = () => {
   // Fetch posts from backend
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/posts")
+      .get(`${API_BASE_URL}/api/posts`)
       .then((res) => setPosts(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -37,7 +37,7 @@ const Post = () => {
     formData.append("name", name);
 
     try {
-      const res = await axios.post("http://localhost:5001/api/posts", formData);
+      const res = await axios.post(`${API_BASE_URL}/api/posts`, formData);
       setPosts([...posts, res.data]); // Update UI with new post
       setAdd(false);
       setFile(null);
@@ -50,7 +50,7 @@ const Post = () => {
   // Delete a post
   const removePost = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/api/posts/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/posts/${id}`);
       setPosts(posts.filter((post) => post._id !== id)); // Update UI
     } catch (err) {
       console.log(err);

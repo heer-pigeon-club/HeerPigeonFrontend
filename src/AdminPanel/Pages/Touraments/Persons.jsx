@@ -5,6 +5,8 @@ import style from "./person.module.css";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 const s = style;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Persons = () => {
   const { id: tournamentId } = useParams();
   const [participants, setParticipants] = useState([]);
@@ -31,7 +33,7 @@ const Persons = () => {
     }
     try {
       await axios.post(
-        `http://localhost:5001/api/participants/${selectedPerson._id}/flight`,
+        `${API_BASE_URL}/api/participants/${selectedPerson._id}/flight`,
         {
           date: selectedDate,
           pigeon: selectedPigeon,
@@ -71,7 +73,7 @@ const Persons = () => {
   useEffect(() => {
     if (!tournamentId) return;
     axios
-      .get(`http://localhost:5001/api/tournaments/${tournamentId}`)
+      .get(`${API_BASE_URL}/api/tournaments/${tournamentId}`)
       .then(({ data }) => {
         setTournamentDates({
           startDate: data.startDate?.split("T")[0] || "",
@@ -89,7 +91,7 @@ const Persons = () => {
     if (!tournamentId) return;
     setLoading(true);
     axios
-      .get(`http://localhost:5001/api/tournaments/${tournamentId}/participants`)
+      .get(`${API_BASE_URL}/api/tournaments/${tournamentId}/participants`)
       .then(({ data }) => setParticipants(Array.isArray(data) ? data : []))
       .catch((error) => {
         console.error("Error fetching participants:", error);
@@ -112,7 +114,7 @@ const Persons = () => {
     if (!selectedPerson || !selectedDate || !selectedPigeon) return;
     axios
       .get(
-        `http://localhost:5001/api/participants/${selectedPerson._id}/flight`,
+        `${API_BASE_URL}/api/participants/${selectedPerson._id}/flight`,
         { params: { date: selectedDate, pigeon: selectedPigeon } }
       )
       .then(({ data }) => {
@@ -136,7 +138,7 @@ const Persons = () => {
   // Delete participant
   const deleteParticipant = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/api/participants/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/participants/${id}`);
       setParticipants((prev) => prev.filter((p) => p._id !== id));
     } catch (error) {
       console.error("Error deleting participant:", error);
@@ -161,7 +163,7 @@ const Persons = () => {
     }
     try {
       const { data } = await axios.post(
-        `http://localhost:5001/api/participants/${selectedPerson._id}/flight`,
+        `${API_BASE_URL}/api/participants/${selectedPerson._id}/flight`,
         { date: selectedDate, pigeon: selectedPigeon, startTime, endTime }
       );
       setParticipants((prev) =>

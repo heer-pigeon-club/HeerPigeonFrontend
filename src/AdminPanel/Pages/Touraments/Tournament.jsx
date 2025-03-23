@@ -9,8 +9,8 @@ import style from "./tournament.module.css";
 import { FaMinusCircle } from "react-icons/fa";
 const s = style;
 import { NavLink } from "react-router-dom";
-
-const Tournament = () => {
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+const Tournament = () => {      
   const [data, setData] = useState([]);
   const [tournament, addTournament] = useState(false);
   const [editTournament, setEditTournament] = useState(false);
@@ -40,7 +40,7 @@ const Tournament = () => {
   }, []);
 
   const fetchTournaments = async () => {
-    const response = await axios.get("http://localhost:5001/api/tournaments");
+    const response = await axios.get(`${API_BASE_URL}/api/tournaments`);
     setData(response.data);
   };
 
@@ -55,18 +55,18 @@ const Tournament = () => {
   };
 
   const handleAddTournament = async () => {
-    await axios.post("http://localhost:5001/api/tournaments", newTournament);
+    await axios.post(`${API_BASE_URL}/api/tournaments`, newTournament);
     fetchTournaments();
     addTournament(false);
   };
   const handlePinTournament = async (id) => {
-    await axios.put(`http://localhost:5001/api/tournaments/${id}/pin`);
+    await axios.put(`${API_BASE_URL}/api/tournaments/${id}/pin`);
     fetchTournaments();
   };
 
   const handleEditTournament = async () => {
     await axios.put(
-      `http://localhost:5001/api/tournaments/${editData._id}`,
+      `${API_BASE_URL}/api/tournaments/${editData._id}`,
       editData
     );
     fetchTournaments();
@@ -74,7 +74,7 @@ const Tournament = () => {
   };
 
   const removeItem = async (id) => {
-    await axios.delete(`http://localhost:5001/api/tournaments/${id}`);
+    await axios.delete(`${API_BASE_URL}/api/tournaments/${id}`);
     fetchTournaments();
   };
 
@@ -98,7 +98,7 @@ const Tournament = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/participants",
+        `${API_BASE_URL}/api/participants`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
