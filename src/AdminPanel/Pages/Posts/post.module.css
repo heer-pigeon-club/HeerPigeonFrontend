@@ -236,3 +236,12 @@
   height: 100%;
   object-fit: contain;
 }
+.filenameInput
+{
+  width: 10rem;
+  height: 2rem;
+  border-radius: 1rem;
+  border: 1px solid #444; 
+  margin-top: 1rem;
+
+}
