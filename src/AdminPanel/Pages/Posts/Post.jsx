@@ -107,7 +107,7 @@ const Post = () => {
             {posts.map((post, index) => (
               <tr key={post._id}>
                 <td>{index + 1}</td>
-                <td style={{ width: "45px", height: "45px" }}
+                <td 
                 >
                   <img
                     src={post.imageUrl}

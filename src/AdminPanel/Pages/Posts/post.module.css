@@ -63,9 +63,8 @@
 .posttable th,
 .posttable td {
   border: 1px solid white;
-  padding: 10px;
   text-align: center;
-
+  height: 4rem;
   
 }
 
@@ -231,3 +230,9 @@
   }
 }
 
+.postImage
+{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
