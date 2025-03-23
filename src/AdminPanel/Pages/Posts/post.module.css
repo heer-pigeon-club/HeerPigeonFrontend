@@ -65,6 +65,8 @@
   border: 1px solid white;
   padding: 10px;
   text-align: center;
+
+  
 }
 
 .posttable th {
@@ -228,3 +230,4 @@
     max-width: 1400px;
   }
 }
+
