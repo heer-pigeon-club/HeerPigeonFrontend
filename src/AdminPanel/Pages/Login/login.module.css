@@ -10,6 +10,8 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
     padding: 1rem;
+    color: white;
+    overflow: hidden;
 }
 
 .box {
@@ -90,9 +92,10 @@
 }
 
 @media (max-width: 480px) {
+
     .box {
-        width: 16rem;
-        height: 40vh;
+        width: 70%;
+        height: 70vh;
     }
     .inputFields {
         width: 8rem;
@@ -151,6 +154,9 @@
     border-radius: 1rem;
     transition: all 0.3s ease;
 }
-.button:hover {
+.button:hover {.box {
+        width:70%;
+        height: 60%;
+    }
     background: #666;
 }
