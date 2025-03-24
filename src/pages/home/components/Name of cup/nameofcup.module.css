@@ -42,7 +42,16 @@
     flex-direction: column;
     padding: 20px;
   }
-
+.winnerSection
+{
+  background-color: #3a3a3a;
+  color: whitesmoke;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  border-radius: 1rem;
+  margin-top: 1rem;
+}
   .controls label {
     font-size: 16px;
     font-weight: bold;
@@ -148,6 +157,12 @@
     .newsbox {
       width: 90%;
       padding: 15px;
+    }
+    .winnerSection
+    {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
     .controls {
       flex-direction: column;
