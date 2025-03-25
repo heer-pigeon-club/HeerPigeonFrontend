@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import style from "./admin.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     // Load Google Translate script dynamically
     const addScript = document.createElement("script");
@@ -55,19 +57,25 @@ const Navbar = () => {
     }
   };
 
+  const handleSignOut = () => {
+    localStorage.removeItem("isAuthenticated"); // Clear login state
+    navigate("/"); // Redirect to login page
+  };
+
   return (
     <div className={style.container}>
       <div className={style.logo}>
-      <NavLink  to="/">
-      <img src={logo} alt="Logo" />
+        <NavLink to="/">
+          <img src={logo} alt="Logo" />
         </NavLink>
-        
       </div>
       <div className={style.navbar}>
         <NavLink className={style.buttons} to="/admin">
           Admin panel
         </NavLink>
-      
+        <button className={style.buttons} onClick={handleSignOut}>
+          Sign Out
+        </button>
       </div>
       <div className={style.language}>
         <button onClick={() => changeLanguage("ur")}>Urdu</button>

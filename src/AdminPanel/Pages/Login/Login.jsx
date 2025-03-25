@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./login.module.css";
 const s = style;
 import logo from "../../../assets/1.png";
-import {useNavigate} from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom";
+
 const Login = () => {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleLogin = () => {
     const adminName = "admin";
     const adminPass = "admin";
-  
+
     if (name === adminName && pass === adminPass) {
       localStorage.setItem("isAuthenticated", "true"); // Save login state
       navigate("/admin"); // Redirect to admin page
@@ -18,7 +21,12 @@ const Login = () => {
       alert("Invalid Credentials");
     }
   };
-  
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      localStorage.removeItem("isAuthenticated"); // Clear login state
+    }
+  }, [location.pathname]);
 
   return (
     <div className={s.container}>
@@ -30,19 +38,27 @@ const Login = () => {
           <h1>Please Enter Id Pass to Login</h1>
           <div className={s.fields}>
             <h2>Enter ID:</h2>
-            <input type="text" className={s.inputFields} value={name} onChange={(e)=>
-                {
-                    setName(e.target.value)
-                }
-            }/>
+            <input
+              type="text"
+              className={s.inputFields}
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
             <h2>Enter ID:</h2>
-            <input type="text" className={s.inputFields} value={pass} onChange={(e)=>
-                {
-                    setPass(e.target.value)
-                }
-            }/>
+            <input
+              type="text"
+              className={s.inputFields}
+              value={pass}
+              onChange={(e) => {
+                setPass(e.target.value);
+              }}
+            />
           </div>
-          <button className={s.button} onClick={handleLogin}>Login</button>
+          <button className={s.button} onClick={handleLogin}>
+            Login
+          </button>
         </div>
       </div>
     </div>
