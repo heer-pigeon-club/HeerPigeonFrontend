@@ -19,7 +19,7 @@ const Contact = () => {
             >
               <FaFacebookSquare />
             </a>
-            <h1 className={s.fbname}>Sohail Shafiq</h1>
+            <h1 className={s.fbname}>Tasawar Hussain</h1>
           </div>
           <div className={s.RightBox}>
             <a
