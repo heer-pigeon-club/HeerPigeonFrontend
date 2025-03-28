@@ -216,7 +216,7 @@ const Tournament = () => {
             }
             className={s.addingPersonInputs}
           />
-          <h2>Enter Address</h2>
+          {/* <h2>Enter Address</h2>
           <input
             className={s.addingPersonInputs}
             type="text"
@@ -224,7 +224,7 @@ const Tournament = () => {
             onChange={(e) =>
               setNewParticipant({ ...newParticipant, address: e.target.value })
             }
-          />
+          /> */}
           <h2>Enter Piegons</h2>
           <input
             className={s.addingPersonInputs}
