@@ -37,7 +37,6 @@
 .tournamenttable th,
 .tournamenttable td {
   border: 1px solid white;
-  padding: 10px;
   text-align: center;
 }
 
@@ -62,7 +61,6 @@
   border-radius: 2rem;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   z-index: 100;
-  padding: 20px;
 }
 
 /* Popup Input */
@@ -71,7 +69,6 @@
   max-width: 300px;
   height: 1.5rem;
   border: 1px solid black;
-  padding: 5px;
 }
 
 /* Button Container */
@@ -90,7 +87,6 @@
   border: none;
   background-color: #ced0d4;
   cursor: pointer;
-  padding: 5px;
 }
 
 /* Loft Button */
@@ -101,7 +97,6 @@
   background-color: rgb(232, 79, 79);
   color: white;
   cursor: pointer;
-  padding: 5px;
 }
 
 /* Save Button */
@@ -112,7 +107,6 @@
   background-color: #00b1fd;
   color: white;
   cursor: pointer;
-  padding: 5px;
 }
 
 /* Select Dropdown */
@@ -129,7 +123,6 @@
 .inputs {
   width: 100%;
   max-width: 300px;
-  padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -157,191 +150,50 @@
 .datesInput {
   width: 100%;
   max-width: 12rem;
-  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
 }
 
-/* 📱 Mobile (up to 600px) */
-@media (max-width: 600px) {
-  .container {
+
+
+@media (max-width: 600px) 
+{
+  .container
+  {
+    width: 100%;
+  }
+  .tournamenttable
+  {
+    width: 100%;
+    font-size: 0.8rem;
+  border-radius: 0.2rem;
+
+  }
+  .popup
+  {
     width: 90%;
+    height: 100%;
   }
-
-  .table {
-    flex-direction: column;
-  }
-
-  .popup {
-    width: 90%;
-    height: auto;
-    padding: 15px;
-  }
-
-  .popup input,
-  .inputs,
-  .datesInput {
-    width: 100%;
-  }
-
-  .button {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .select {
-    width: 100%;
-  }
-
-  .dates {
-    flex-direction: column;
-    gap: 5px;
-  }
-}
-
-/* 📟 Tablets (601px - 1024px) */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .container {
-    width: 85%;
-  }
-
-  .popup {
-    width: 70%;
-    height: auto;
-  }
-
-  .button {
-    width: 60%;
-  }
-}
-
-/* 🖥️ Large Screens (above 1024px) */
-@media (min-width: 1025px) {
-  .container {
+  .button
+  {
     width: 80%;
-    max-width: 1400px;
+
   }
+  .button button 
+  {
+    width: 30%;
+    font-size: 1rem;
+  }
+  .tournamenttable th,
+.tournamenttable td {
+  border: 1px solid white;
+  
+  text-align: center;
 }
 
-/* 📱 Small Mobile (up to 400px) */
-@media (max-width: 400px) {
-  .container {
-    width: 95%;
-  }
-
-  .popup {
-    width: 95%;
-    height: auto;
-    padding: 10px;
-  }
-
-  .popup input,
-  .inputs,
-  .datesInput {
-    width: 100%;
-  }
-
-  .button {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .select {
-    width: 100%;
-  }
-
-  .dates {
-    flex-direction: column;
-    gap: 5px;
-  }
+.tournamenttable th {
+  background-color: black;
+  color: white;
 }
-
-/* 📱 Mobile (401px - 500px) */
-@media (min-width: 401px) and (max-width: 500px) {
-  .container {
-    width: 90%;
-  }
-
-  .popup {
-    width: 90%;
-    height: auto;
-    padding: 12px;
-  }
-
-  .button {
-    width: 100%;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .select {
-    width: 100%;
-  }
-}
-
-/* 📱 Mobile (501px - 600px) */
-@media (min-width: 501px) and (max-width: 600px) {
-  .container {
-    width: 88%;
-  }
-
-  .popup {
-    width: 85%;
-    height: auto;
-    padding: 15px;
-  }
-
-  .button {
-    width: 90%;
-    flex-direction: row;
-    justify-content: center;
-    gap: 15px;
-  }
-
-  .select {
-    width: 90%;
-  }
-}
-
-/* 📟 Small Tablets (601px - 700px) */
-@media (min-width: 601px) and (max-width: 700px) {
-  .container {
-    width: 85%;
-  }
-
-  .popup {
-    width: 75%;
-    height: auto;
-    padding: 15px;
-  }
-
-  .button {
-    width: 80%;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-/* 📟 Medium Tablets (701px - 800px) */
-@media (min-width: 701px) and (max-width: 800px) {
-  .container {
-    width: 80%;
-  }
-
-  .popup {
-    width: 70%;
-    height: auto;
-    padding: 18px;
-  }
-
-  .button {
-    width: 70%;
-    flex-direction: row;
-    justify-content: space-evenly;
-  }
 }

@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import style from "./login.module.css";
 const s = style;
 import logo from "../../../assets/1.png";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogin = () => {
     const adminName = "admin";
@@ -21,12 +20,6 @@ const Login = () => {
       alert("Invalid Credentials");
     }
   };
-
-  useEffect(() => {
-    if (location.pathname === "/") {
-      localStorage.removeItem("isAuthenticated"); // Clear login state
-    }
-  }, [location.pathname]);
 
   return (
     <div className={s.container}>
@@ -46,9 +39,9 @@ const Login = () => {
                 setName(e.target.value);
               }}
             />
-            <h2>Enter ID:</h2>
+            <h2>Enter Password:</h2>
             <input
-              type="text"
+              type="password"
               className={s.inputFields}
               value={pass}
               onChange={(e) => {

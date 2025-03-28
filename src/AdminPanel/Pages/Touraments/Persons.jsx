@@ -313,7 +313,7 @@ const Persons = () => {
               (f) => f.date === selectedDate && f.pigeon === selectedPigeon
             )?.lofted && (
               <button className={s.loft} onClick={loftPigeon}>
-                Mark as Lofted
+                  Lofted
               </button>
             )}
             <button

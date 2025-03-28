@@ -164,7 +164,6 @@
 /* File Upload */
 .fileInput {
   width: 80%;
-  padding: 10px;
   border: 2px solid #444;
   border-radius: 5px;
   background: #2c2c2c;
@@ -188,7 +187,6 @@
 /* Inputs */
 .inputs {
   width: 100%;
-  padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -210,7 +208,6 @@
 
 .datesInput {
   width: 100%;
-  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
@@ -226,7 +223,6 @@
 
   .top {
     height: auto;
-    padding: 1rem;
     border-radius: 2rem;
 
   }
@@ -244,8 +240,7 @@
 
   .popup {
     width: 90%;
-    height: auto;
-    padding: 1rem;
+    height: 100%;
   }
 
   .addingPersonInputs {
@@ -276,7 +271,7 @@
 
   .popup {
     width: 80%;
-    height: auto;
+    height: 100%;
   }
 
   .addingPersonInputs {
@@ -284,7 +279,7 @@
   }
 
   .dates {
-    width: 100%;
+    width: 80%;
   }
 
   .button {

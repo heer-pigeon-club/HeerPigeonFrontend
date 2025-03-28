@@ -1,7 +1,7 @@
   import React, { useEffect } from "react";
   import style from "./Navbar.module.css";
   import { NavLink } from "react-router-dom";
-  import logo from "../../../../assets/logo.png";
+  import logo from "../../../../assets/1.png";
 
   const Navbar = () => {
     useEffect(() => {

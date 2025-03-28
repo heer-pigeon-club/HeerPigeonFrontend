@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import style from "./admin.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/1.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ const Navbar = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem("isAuthenticated"); // Clear login state
-    navigate("/"); // Redirect to login page
+    navigate("/login"); // Redirect to login page
   };
 
   return (
