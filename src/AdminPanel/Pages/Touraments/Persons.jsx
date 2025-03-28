@@ -197,7 +197,7 @@ const Persons = () => {
               <th>No</th>
               <th>Pic</th>
               <th>Name</th>
-              <th>Address</th>
+              {/* <th>Address</th> */}
               <th>Pigeons</th>
               <th>Edit</th>
               <th>Delete</th>
@@ -222,7 +222,7 @@ const Persons = () => {
                     />
                   </td>
                   <td>{person.name || "N/A"}</td>
-                  <td>{person.address || "No address available"}</td>
+                  {/* <td>{person.address || "No address available"}</td> */}
                   <td>{person.pigeons?.length || 0}</td>
                   <td>
                     <BiEdit

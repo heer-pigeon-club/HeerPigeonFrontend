@@ -81,7 +81,7 @@ const Tournament = () => {
   const handleAddParticipant = async () => {
     if (
       !newParticipant.name ||
-      !newParticipant.address ||
+       
       !newParticipant.image ||
       !newParticipant.pigeons // Should be a number
     ) {
