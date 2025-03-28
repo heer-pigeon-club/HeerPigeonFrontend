@@ -10,8 +10,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    const adminName = "admin";
-    const adminPass = "admin";
+    const adminName = "heer";
+    const adminPass = "Tasawar007";
 
     if (name === adminName && pass === adminPass) {
       localStorage.setItem("isAuthenticated", "true"); // Save login state
