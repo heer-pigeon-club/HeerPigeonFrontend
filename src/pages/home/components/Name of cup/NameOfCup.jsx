@@ -312,8 +312,8 @@ const NameOfCup = () => {
           <div className={s.winner}>
             <h2>🏆 First Winner</h2>
             <p>
-              Congratulations <strong>{secondWinner.name}</strong> -{" "}
-                {getLastPigeonEndTime(secondWinner.flights)}
+              Congratulations <strong>{winner.name}</strong> -{" "}
+              {getLastPigeonEndTime(winner.flights)}
             </p>
           </div>
 
@@ -329,7 +329,7 @@ const NameOfCup = () => {
           )}
         </div>
       )}
-
+     
       <div className={s.participant}>
         <table className={s.table}>
           <thead>
