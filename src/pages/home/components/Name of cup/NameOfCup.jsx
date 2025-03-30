@@ -303,7 +303,7 @@ const NameOfCup = () => {
             <div className={s.secondWinner}>
               <h2>🥈 Last Winner</h2>
               <p>
-                Congratulations <strong>{winner.name}</strong> -{" "}
+                Congratulations <strong>{secondWinner.name}</strong> -{" "}
                 {getLastPigeonEndTime(winner.flights)}
               </p>
             </div>
