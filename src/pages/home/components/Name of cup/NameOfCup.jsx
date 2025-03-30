@@ -99,14 +99,13 @@ const NameOfCup = () => {
     const endDate = new Date(tournament.endDate);
     const allowedPigeons = tournament.pigeons || 0;
     setAllowNumber(allowedPigeons);
+
     const participantsWithTotalTime = participants.map((participant) => {
       const flights = flightData[participant._id] || [];
-
       let totalFlightTime = 0;
-      let loftedExists = false;
-      let firstPigeonTimeOnFirstDate = null;
-      let earliestDate = null;
+      let dailyFlightTimes = {}; // Store daily flight times for UI
 
+      // Group flights by date
       const groupedFlights = {};
       flights.forEach((flight) => {
         const dateKey = new Date(flight.date).toISOString().split("T")[0];
@@ -118,51 +117,34 @@ const NameOfCup = () => {
         });
       });
 
-      // Find the first recorded date
-      const recordedDates = Object.keys(groupedFlights).sort();
-      earliestDate = recordedDates.length > 0 ? recordedDates[0] : null;
-
-      let totalDaysWithData = recordedDates.length;
-      let tournamentDays = 0;
-      for (
-        let d = new Date(startDate);
-        d <= endDate;
-        d.setDate(d.getDate() + 1)
-      ) {
-        tournamentDays++;
-      }
-
-      let hasAllDaysData = totalDaysWithData >= tournamentDays;
-
+      // Process each day's flight data
       Object.entries(groupedFlights).forEach(([date, flightsPerDay]) => {
+        // Sort flights by pigeonNumber
         flightsPerDay.sort((a, b) => a.pigeonNumber - b.pigeonNumber);
         const validFlights = flightsPerDay.slice(0, allowedPigeons);
 
-        if (validFlights.some((flight) => flight.lofted)) {
-          loftedExists = true;
+        const loftedExists = validFlights.some((flight) => flight.lofted);
+        const firstPigeonTime =
+          validFlights.length > 0 ? validFlights[0].time : 0;
+
+        let dailyTotal = validFlights.reduce(
+          (sum, flight) => sum + flight.time,
+          0
+        );
+
+        // Subtract first pigeon’s time only if NO lofted pigeon exists
+        if (!loftedExists && firstPigeonTime > 0) {
+          dailyTotal -= firstPigeonTime;
         }
 
-        if (date === earliestDate && validFlights.length > 0) {
-          firstPigeonTimeOnFirstDate = validFlights[0].time;
-        }
-
-        validFlights.forEach((flight) => {
-          totalFlightTime += flight.time;
-        });
+        dailyFlightTimes[date] = Math.max(dailyTotal, 0);
+        totalFlightTime += dailyFlightTimes[date];
       });
 
-      if (
-        hasAllDaysData &&
-        !loftedExists &&
-        firstPigeonTimeOnFirstDate !== null
-      ) {
-        totalFlightTime -= firstPigeonTimeOnFirstDate;
-        totalFlightTime = Math.max(totalFlightTime, 0);
-      }
-
-      return { ...participant, totalFlightTime, flights };
+      return { ...participant, totalFlightTime, dailyFlightTimes, flights };
     });
 
+    // Sort participants by total flight time (highest first)
     const sorted = participantsWithTotalTime.sort(
       (a, b) => b.totalFlightTime - a.totalFlightTime
     );
@@ -321,15 +303,14 @@ const NameOfCup = () => {
             <div className={s.secondWinner}>
               <h2>🥈 Last Winner</h2>
               <p>
-              Congratulations <strong>{winner.name}</strong> -{" "}
-              {getLastPigeonEndTime(winner.flights)}
-                
+                Congratulations <strong>{winner.name}</strong> -{" "}
+                {getLastPigeonEndTime(winner.flights)}
               </p>
             </div>
           )}
         </div>
       )}
-     
+
       <div className={s.participant}>
         <table className={s.table}>
           <thead>
@@ -357,28 +338,13 @@ const NameOfCup = () => {
           </thead>
           <tbody>
             {sortedParticipants.map((participant) => {
-              const flights = participant.flights || [];
+              const {
+                flights = [],
+                dailyFlightTimes = {},
+                totalFlightTime,
+              } = participant;
 
               if (selectedDate === "total") {
-                // Calculate total pigeons and total flight time per date
-                const dateFlightTimes = availableDates.reduce((acc, date) => {
-                  acc[date] = flights
-                    .filter(
-                      (f) =>
-                        new Date(f.date).toISOString().split("T")[0] === date
-                    )
-                    .reduce(
-                      (sum, flight) =>
-                        sum + (parseFloat(flight.flightTime) || 0),
-                      0
-                    );
-                  return acc;
-                }, {});
-                const totalFlightTime = flights.reduce(
-                  (sum, flight) => sum + (parseFloat(flight.flightTime) || 0),
-                  0
-                );
-
                 return (
                   <tr key={participant._id}>
                     <td className={s.img}>
@@ -388,20 +354,23 @@ const NameOfCup = () => {
                       />
                     </td>
                     <td>{participant.name}</td>
-                    <td>{allownumber - 1}</td>
+                    <td>{allownumber}</td>
                     {availableDates.map((date) => (
-                      <td key={date}>{formatTime(dateFlightTimes[date])}</td>
+                      <td key={date}>
+                        {formatTime(dailyFlightTimes[date] || 0)}
+                      </td>
                     ))}
                     <td>{formatTime(totalFlightTime)}</td>
                   </tr>
                 );
               } else {
-                // Filter flights only for the selected date
+                // Flights filtered by selected date
                 const selectedFlights = flights.filter(
                   (f) =>
                     new Date(f.date).toISOString().split("T")[0] ===
                     selectedDate
                 );
+
                 const startTime =
                   selectedFlights.length > 0
                     ? new Date(
@@ -412,11 +381,6 @@ const NameOfCup = () => {
                         hour12: false,
                       })
                     : "N/A";
-
-                const totalFlightTime = selectedFlights.reduce(
-                  (sum, flight) => sum + (parseFloat(flight.flightTime) || 0),
-                  0
-                );
 
                 return (
                   <tr key={participant._id}>
@@ -435,7 +399,7 @@ const NameOfCup = () => {
                           : selectedFlights[i]?.endTime || "N/A"}
                       </td>
                     ))}
-                    <td>{formatTime(totalFlightTime)}</td>
+                    <td>{formatTime(dailyFlightTimes[selectedDate] || 0)}</td>
                   </tr>
                 );
               }
