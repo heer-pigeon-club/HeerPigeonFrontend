@@ -98,6 +98,9 @@ const NameOfCup = () => {
     const allowedPigeons = tournament.pigeons || 0;
     setAllowNumber(allowedPigeons);
 
+    let maxFlightTime = 0;
+    let secondWinnerParticipant = null;
+
     const participantsWithTotalTime = participants.map((participant) => {
       const flights = flightData[participant._id] || [];
       let totalFlightTime = 0;
@@ -122,6 +125,14 @@ const NameOfCup = () => {
 
         // Take only up to allowed pigeons
         const validFlights = flightsPerDay.slice(0, allowedPigeons);
+
+        // Find the highest single pigeon flight time for second winner selection
+        validFlights.forEach((flight) => {
+          if (flight.time > maxFlightTime) {
+            maxFlightTime = flight.time;
+            secondWinnerParticipant = participant;
+          }
+        });
 
         // Check if a lofted pigeon exists
         const loftedExists = validFlights.some((flight) => flight.lofted);
@@ -158,9 +169,51 @@ const NameOfCup = () => {
       (a, b) => b.totalFlightTime - a.totalFlightTime
     );
 
+    // ✅ **Second winner is now the participant whose any pigeon has the highest flight time**
     setSortedParticipants(sorted);
-    setWinner(sorted.length > 0 ? sorted[0] : null);
-    setSecondWinner(sorted.length > 1 ? sorted[1] : null);
+    setSecondWinner(secondWinnerParticipant);
+
+    // Fetch and log first pigeon times (for debugging)
+    const firstPigeonTimes = getFirstPigeonFlightTimes();
+    console.log(firstPigeonTimes);
+  };
+  const getFirstPigeonFlightTimes = () => {
+    let firstPigeonTimes = {};
+
+    participants.forEach((participant) => {
+      const flights = flightData[participant._id] || [];
+
+      if (flights.length === 0) {
+        firstPigeonTimes[participant._id] = {}; // No flights for this participant
+        return;
+      }
+
+      // Group flights by date
+      const groupedFlights = {};
+      flights.forEach((flight) => {
+        const dateKey = new Date(flight.date).toISOString().split("T")[0];
+        if (!groupedFlights[dateKey]) groupedFlights[dateKey] = [];
+        groupedFlights[dateKey].push(flight);
+      });
+
+      // Initialize first pigeon time for this participant
+      firstPigeonTimes[participant._id] = {};
+
+      Object.entries(groupedFlights).forEach(([date, flightsPerDay]) => {
+        // Sort flights by pigeon number
+        flightsPerDay.sort((a, b) => a.pigeonNumber - b.pigeonNumber);
+
+        // Get the first pigeon's flight time
+        if (flightsPerDay.length > 0) {
+          firstPigeonTimes[participant._id][date] =
+            parseFloat(flightsPerDay[0].flightTime) || 0;
+        } else {
+          firstPigeonTimes[participant._id][date] = null;
+        }
+      });
+    });
+
+    return firstPigeonTimes;
   };
 
   const formatTime = (seconds) => {
@@ -169,35 +222,6 @@ const NameOfCup = () => {
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
     return `${hours}: ${minutes}: ${secs}`;
-  };
-
-  const getLastPigeonEndTime = (flights) => {
-    if (!flights || flights.length === 0) return "N/A";
-
-    // Group flights by date
-    const groupedFlights = {};
-    flights.forEach((flight) => {
-      const dateKey = new Date(flight.date).toISOString().split("T")[0]; // Format YYYY-MM-DD
-      if (!groupedFlights[dateKey]) groupedFlights[dateKey] = [];
-      groupedFlights[dateKey].push(flight);
-    });
-
-    // Get the last recorded date
-    const recordedDates = Object.keys(groupedFlights).sort(); // Sorting ensures last date is at the end
-    const lastDate =
-      recordedDates.length > 0 ? recordedDates[recordedDates.length - 1] : null;
-
-    if (!lastDate) return "N/A";
-
-    // Get the flights for the last recorded date
-    const lastDateFlights = groupedFlights[lastDate];
-
-    // Find the last pigeon end time on that date
-    const lastPigeonFlight = lastDateFlights.reduce((latest, flight) => {
-      return flight.endTime > (latest?.endTime || "00:00:00") ? flight : latest;
-    }, null);
-
-    return lastPigeonFlight?.endTime || "N/A";
   };
 
   useEffect(() => {
@@ -298,13 +322,12 @@ const NameOfCup = () => {
         </div>
       </div>
 
-      {winner && selectedDate === "total" && (
+      {winner && selectedDate !== "total" && (
         <div className={s.winnerSection}>
           <div className={s.winner}>
             <h2>🏆 First Winner</h2>
             <p>
               Congratulations <strong>{winner.name}</strong> -{" "}
-              {getLastPigeonEndTime(winner.flights)}
             </p>
           </div>
 
@@ -313,7 +336,6 @@ const NameOfCup = () => {
               <h2>🥈 Last Winner</h2>
               <p>
                 Congratulations <strong>{secondWinner.name}</strong> -{" "}
-                {getLastPigeonEndTime(winner.flights)}
               </p>
             </div>
           )}
