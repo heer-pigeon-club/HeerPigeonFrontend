@@ -95,8 +95,6 @@ const NameOfCup = () => {
     const tournament = tournaments.find((t) => t._id === selectedTournament);
     if (!tournament) return;
 
-    const startDate = new Date(tournament.startDate);
-    const endDate = new Date(tournament.endDate);
     const allowedPigeons = tournament.pigeons || 0;
     setAllowNumber(allowedPigeons);
 
@@ -121,22 +119,33 @@ const NameOfCup = () => {
       Object.entries(groupedFlights).forEach(([date, flightsPerDay]) => {
         // Sort flights by pigeonNumber
         flightsPerDay.sort((a, b) => a.pigeonNumber - b.pigeonNumber);
+
+        // Take only up to allowed pigeons
         const validFlights = flightsPerDay.slice(0, allowedPigeons);
 
+        // Check if a lofted pigeon exists
         const loftedExists = validFlights.some((flight) => flight.lofted);
+
+        // First pigeon’s time
         const firstPigeonTime =
           validFlights.length > 0 ? validFlights[0].time : 0;
 
+        // Compute total flight time
         let dailyTotal = validFlights.reduce(
           (sum, flight) => sum + flight.time,
           0
         );
 
-        // Subtract first pigeon’s time only if NO lofted pigeon exists
-        if (!loftedExists && firstPigeonTime > 0) {
+        // 🚀 **FIX:** Only subtract first pigeon’s time if we have data for all allowed pigeons.
+        if (
+          !loftedExists &&
+          firstPigeonTime > 0 &&
+          validFlights.length === allowedPigeons
+        ) {
           dailyTotal -= firstPigeonTime;
         }
 
+        // Ensure non-negative time
         dailyFlightTimes[date] = Math.max(dailyTotal, 0);
         totalFlightTime += dailyFlightTimes[date];
       });
