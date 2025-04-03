@@ -11,8 +11,8 @@ const NameOfCup = () => {
   const [flightData, setFlightData] = useState({});
   const [news, setNews] = useState([]);
   const [sortedParticipants, setSortedParticipants] = useState([]);
-  const [winner, setWinner] = useState(null);
-  const [secondWinner, setSecondWinner] = useState(null);
+  const [firstWinner, setFirstWinner] = useState(null); // First Winner
+  const [lastWinner, setLastWinner] = useState(null); // Last Winner
   const [allownumber, setAllowNumber] = useState(0);
   const [maxPigeons, setMaxPigeons] = useState(0);
   const [availableDates, setAvailableDates] = useState([]); // Change variable name
@@ -89,17 +89,77 @@ const NameOfCup = () => {
       console.error("Error fetching flight data", err);
     }
   };
-  const calculateWinnerAndSort = () => {
+  const calculateWinnersPerDate = (selectedDate) => {
     if (participants.length === 0) return;
 
     const tournament = tournaments.find((t) => t._id === selectedTournament);
     if (!tournament) return;
 
     const allowedPigeons = tournament.pigeons || 0;
-    setAllowNumber(allowedPigeons);
+    setAllowNumber(allowedPigeons); // Set the allowed number of pigeons
+    let firstWinner = null;
+    let firstWinnerFlightTime = 0;
+    let firstPigeonEndTime = null; // For storing the first pigeon's end time
 
-    let maxFlightTime = 0;
-    let secondWinnerParticipant = null;
+    let lastWinner = null;
+    let lastWinnerFlightTime = 0; // Highest flight time of any pigeon
+    let lastWinnerEndTime = null; // For storing the last pigeon's end time
+
+    participants.forEach((participant) => {
+      const flights = flightData[participant._id] || [];
+
+      // Filter flights for the selected date
+      const flightsOnDate = flights.filter((flight) => {
+        const flightDate = new Date(flight.date).toISOString().split("T")[0];
+        return flightDate === selectedDate;
+      });
+
+      if (flightsOnDate.length === 0) return;
+
+      // Sort flights by pigeonNumber (first pigeon first)
+      flightsOnDate.sort((a, b) => a.pigeonNumber - b.pigeonNumber);
+
+      // First Winner: First pigeon's flight time and end time
+      if (flightsOnDate.length > 0) {
+        const firstPigeon = flightsOnDate[0];
+        const firstPigeonTime = parseFloat(firstPigeon.flightTime) || 0;
+
+        // Fetch end time for the first pigeon (if available)
+        const firstPigeonEndTimeFetched = firstPigeon.endTime || null;
+
+        if (firstPigeonTime > firstWinnerFlightTime) {
+          firstWinnerFlightTime = firstPigeonTime;
+          firstWinner = participant;
+          firstPigeonEndTime = firstPigeonEndTimeFetched; // Store the end time
+        }
+      }
+
+      // Last Winner: Any pigeon's flight time (highest time) and end time
+      flightsOnDate.forEach((flight) => {
+        const pigeonTime = parseFloat(flight.flightTime) || 0;
+
+        // Fetch end time for this pigeon (if available)
+        const pigeonEndTimeFetched = flight.endTime || null;
+
+        if (pigeonTime > lastWinnerFlightTime) {
+          lastWinnerFlightTime = pigeonTime;
+          lastWinner = participant;
+          lastWinnerEndTime = pigeonEndTimeFetched; // Store the end time
+        }
+      });
+    });
+
+    // Set the winners with their respective names and end times
+    setFirstWinner({ ...firstWinner, firstPigeonEndTime });
+    setLastWinner({ ...lastWinner, lastWinnerEndTime });
+  };
+  const calculateWinnerAndSort = (selectedDate) => {
+    if (participants.length === 0) return;
+
+    const tournament = tournaments.find((t) => t._id === selectedTournament);
+    if (!tournament) return;
+
+    const allowedPigeons = tournament.pigeons || 0;
 
     const participantsWithTotalTime = participants.map((participant) => {
       const flights = flightData[participant._id] || [];
@@ -115,48 +175,35 @@ const NameOfCup = () => {
           time: parseFloat(flight.flightTime) || 0,
           lofted: flight.lofted || false,
           pigeonNumber: flight.pigeonNumber,
+          endTime: flight.endTime, // Ensure endTime is included here
         });
       });
 
       // Process each day's flight data
       Object.entries(groupedFlights).forEach(([date, flightsPerDay]) => {
-        // Sort flights by pigeonNumber
         flightsPerDay.sort((a, b) => a.pigeonNumber - b.pigeonNumber);
 
         // Take only up to allowed pigeons
         const validFlights = flightsPerDay.slice(0, allowedPigeons);
 
-        // Find the highest single pigeon flight time for second winner selection
-        validFlights.forEach((flight) => {
-          if (flight.time > maxFlightTime) {
-            maxFlightTime = flight.time;
-            secondWinnerParticipant = participant;
-          }
-        });
-
-        // Check if a lofted pigeon exists
-        const loftedExists = validFlights.some((flight) => flight.lofted);
-
         // First pigeon’s time
         const firstPigeonTime =
           validFlights.length > 0 ? validFlights[0].time : 0;
 
-        // Compute total flight time
         let dailyTotal = validFlights.reduce(
           (sum, flight) => sum + flight.time,
           0
         );
 
-        // 🚀 **FIX:** Only subtract first pigeon’s time if we have data for all allowed pigeons.
+        // Adjust daily total if there are no lofted pigeons
         if (
-          !loftedExists &&
+          !validFlights.some((flight) => flight.lofted) &&
           firstPigeonTime > 0 &&
           validFlights.length === allowedPigeons
         ) {
           dailyTotal -= firstPigeonTime;
         }
 
-        // Ensure non-negative time
         dailyFlightTimes[date] = Math.max(dailyTotal, 0);
         totalFlightTime += dailyFlightTimes[date];
       });
@@ -164,60 +211,22 @@ const NameOfCup = () => {
       return { ...participant, totalFlightTime, dailyFlightTimes, flights };
     });
 
-    // Sort participants by total flight time (highest first)
+    // Sort participants based on their total flight time (descending)
     const sorted = participantsWithTotalTime.sort(
       (a, b) => b.totalFlightTime - a.totalFlightTime
     );
 
-    // ✅ **Second winner is now the participant whose any pigeon has the highest flight time**
+    // Update state with sorted participants
     setSortedParticipants(sorted);
-    setSecondWinner(secondWinnerParticipant);
 
-    // Fetch and log first pigeon times (for debugging)
-    const firstPigeonTimes = getFirstPigeonFlightTimes();
-    console.log(firstPigeonTimes);
-  };
-  const getFirstPigeonFlightTimes = () => {
-    let firstPigeonTimes = {};
-
-    participants.forEach((participant) => {
-      const flights = flightData[participant._id] || [];
-
-      if (flights.length === 0) {
-        firstPigeonTimes[participant._id] = {}; // No flights for this participant
-        return;
-      }
-
-      // Group flights by date
-      const groupedFlights = {};
-      flights.forEach((flight) => {
-        const dateKey = new Date(flight.date).toISOString().split("T")[0];
-        if (!groupedFlights[dateKey]) groupedFlights[dateKey] = [];
-        groupedFlights[dateKey].push(flight);
-      });
-
-      // Initialize first pigeon time for this participant
-      firstPigeonTimes[participant._id] = {};
-
-      Object.entries(groupedFlights).forEach(([date, flightsPerDay]) => {
-        // Sort flights by pigeon number
-        flightsPerDay.sort((a, b) => a.pigeonNumber - b.pigeonNumber);
-
-        // Get the first pigeon's flight time
-        if (flightsPerDay.length > 0) {
-          firstPigeonTimes[participant._id][date] =
-            parseFloat(flightsPerDay[0].flightTime) || 0;
-        } else {
-          firstPigeonTimes[participant._id][date] = null;
-        }
-      });
-    });
-
-    return firstPigeonTimes;
+    // Check if all participants' data is added and calculate winners
+    if (sorted.length === participants.length) {
+      calculateWinnersPerDate(selectedDate); // Calculate and set winners based on the date
+    }
   };
 
   const formatTime = (seconds) => {
-    if (!seconds || seconds <= 0) return "N/A";
+    if (!seconds || seconds <= 0) return "";
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
@@ -259,7 +268,8 @@ const NameOfCup = () => {
               setSelectedDate("");
               setParticipants([]);
               setFlightData({});
-              setWinner(null);
+              setFirstWinner(null);
+              setLastWinner(null);
               setSortedParticipants([]);
             }}
           >
@@ -284,7 +294,7 @@ const NameOfCup = () => {
                       }
                       onClick={() => {
                         setSelectedDate(dateStr);
-                        setWinner(null);
+                        calculateWinnersPerDate(dateStr);
                       }}
                     >
                       {new Date(dateStr).toDateString()}
@@ -299,11 +309,6 @@ const NameOfCup = () => {
                   }
                   onClick={() => {
                     setSelectedDate("total");
-                    setWinner(
-                      sortedParticipants.length > 0
-                        ? sortedParticipants[0]
-                        : null
-                    );
                   }}
                 >
                   Total
@@ -322,20 +327,32 @@ const NameOfCup = () => {
         </div>
       </div>
 
-      {winner && selectedDate !== "total" && (
+      {selectedDate && selectedDate !== "total" && (
         <div className={s.winnerSection}>
-          <div className={s.winner}>
-            <h2>🏆 First Winner</h2>
-            <p>
-              Congratulations <strong>{winner.name}</strong> -{" "}
-            </p>
-          </div>
+          {firstWinner && (
+            <div className={s.firstWinnerSection}>
+              <h2>🏆 First Winner</h2>
+              <p>
+                <strong>{firstWinner.name}</strong> :
+                <strong>
+                  {firstWinner.firstPigeonEndTime
+                    ? firstWinner.firstPigeonEndTime.toLocaleString()
+                    : "Not available"}
+                </strong>{" "}
+              </p>
+            </div>
+          )}
 
-          {secondWinner && (
-            <div className={s.secondWinner}>
+          {lastWinner && (
+            <div className={s.LastWinnerSection}>
               <h2>🥈 Last Winner</h2>
               <p>
-                Congratulations <strong>{secondWinner.name}</strong> -{" "}
+                <strong>{lastWinner.name} :</strong>
+                <strong>
+                  {lastWinner.lastWinnerEndTime
+                    ? lastWinner.lastWinnerEndTime.toLocaleString()
+                    : "Not available"}
+                </strong>
               </p>
             </div>
           )}
@@ -379,10 +396,7 @@ const NameOfCup = () => {
                 return (
                   <tr key={participant._id}>
                     <td className={s.img}>
-                      <img
-                        src={participant.imagePath}
-                        alt={participant.name || "Unknown"}
-                      />
+                      <img src={participant.imagePath || ""} />
                     </td>
                     <td>{participant.name}</td>
                     <td>{allownumber}</td>
@@ -411,15 +425,12 @@ const NameOfCup = () => {
                         minute: "2-digit",
                         hour12: false,
                       })
-                    : "N/A";
+                    : "";
 
                 return (
                   <tr key={participant._id}>
                     <td className={s.img}>
-                      <img
-                        src={participant.imagePath}
-                        alt={participant.name || "Unknown"}
-                      />
+                      <img src={participant.imagePath || ""} />
                     </td>
                     <td>{participant.name}</td>
                     <td>{startTime}</td>
@@ -427,7 +438,7 @@ const NameOfCup = () => {
                       <td key={i}>
                         {selectedFlights[i]?.lofted
                           ? "Lofted"
-                          : selectedFlights[i]?.endTime || "N/A"}
+                          : selectedFlights[i]?.endTime || ""}
                       </td>
                     ))}
                     <td>{formatTime(dailyFlightTimes[selectedDate] || 0)}</td>

@@ -113,10 +113,9 @@ const Persons = () => {
   useEffect(() => {
     if (!selectedPerson || !selectedDate || !selectedPigeon) return;
     axios
-      .get(
-        `${API_BASE_URL}/api/participants/${selectedPerson._id}/flight`,
-        { params: { date: selectedDate, pigeon: selectedPigeon } }
-      )
+      .get(`${API_BASE_URL}/api/participants/${selectedPerson._id}/flight`, {
+        params: { date: selectedDate, pigeon: selectedPigeon },
+      })
       .then(({ data }) => {
         if (data.lofted) {
           setStartTime("");
@@ -258,6 +257,7 @@ const Persons = () => {
             type="date"
             min={tournamentDates.startDate}
             max={tournamentDates.endDate}
+            value={new Date().toISOString().split("T")[0]}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
           <h3>Select Pigeon</h3>
@@ -313,7 +313,7 @@ const Persons = () => {
               (f) => f.date === selectedDate && f.pigeon === selectedPigeon
             )?.lofted && (
               <button className={s.loft} onClick={loftPigeon}>
-                  Lofted
+                Lofted
               </button>
             )}
             <button

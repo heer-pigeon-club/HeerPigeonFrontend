@@ -10,7 +10,7 @@ import { FaMinusCircle } from "react-icons/fa";
 const s = style;
 import { NavLink } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_URL;
-const Tournament = () => {      
+const Tournament = () => {
   const [data, setData] = useState([]);
   const [tournament, addTournament] = useState(false);
   const [editTournament, setEditTournament] = useState(false);
@@ -81,8 +81,6 @@ const Tournament = () => {
   const handleAddParticipant = async () => {
     if (
       !newParticipant.name ||
-       
-      !newParticipant.image ||
       !newParticipant.pigeons // Should be a number
     ) {
       alert("Please fill all fields and upload an image");
