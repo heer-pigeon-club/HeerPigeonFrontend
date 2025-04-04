@@ -26,9 +26,7 @@
   0% {
     transform: translateX(-100%);
   }
-  50% {
-    transform: translateX(0%); /* Stop in the middle */
-  }
+
   100% {
     transform: translateX(100%);
   }
