@@ -300,7 +300,7 @@ const Persons = () => {
             type="date"
             min={tournamentDates.startDate}
             max={tournamentDates.endDate}
-            value={new Date().toISOString().split("T")[0]}
+            
             onChange={(e) => setSelectedDate(e.target.value)}
           />
           <h3>Select Pigeon</h3>
