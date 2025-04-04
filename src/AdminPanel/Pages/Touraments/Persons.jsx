@@ -144,6 +144,49 @@ const Persons = () => {
       setErrorMessage("Error deleting participant. Please try again.");
     }
   };
+  // Update pigeon flight data
+  const updatePigeonData = async () => {
+    if (!selectedPigeon) {
+      setErrorMessage("Please select a pigeon.");
+      return;
+    }
+    if (!selectedDate || !startTime || !endTime) {
+      setErrorMessage("All fields are required.");
+      return;
+    }
+    if (endTime <= startTime) {
+      setErrorMessage(
+        "End time cannot be earlier than or equal to start time."
+      );
+      return;
+    }
+    try {
+      const { data } = await axios.put(
+        `${API_BASE_URL}/api/participants/${selectedPerson._id}/flight`,
+        { date: selectedDate, pigeon: selectedPigeon, startTime, endTime }
+      );
+      setParticipants((prev) =>
+        prev.map((p) =>
+          p._id === selectedPerson._id
+            ? {
+                ...p,
+                flightData: [
+                  ...(p.flightData || []).filter(
+                    (f) =>
+                      !(f.date === selectedDate && f.pigeon === selectedPigeon)
+                  ),
+                  data,
+                ],
+              }
+            : p
+        )
+      );
+      setEditParticipant(false);
+    } catch (error) {
+      console.error("Error updating flight data:", error);
+      setErrorMessage("Failed to update flight data. Please try again.");
+    }
+  };
   // Save pigeon flight data
   const savePigeonData = async () => {
     if (!selectedPigeon) {
@@ -321,6 +364,9 @@ const Persons = () => {
               onClick={() => setEditParticipant(false)}
             >
               Cancel
+            </button>
+            <button className={s.save} onClick={updatePigeonData}>
+              Update
             </button>
             <button className={s.save} onClick={savePigeonData}>
               Save
