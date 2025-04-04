@@ -258,9 +258,18 @@ const NameOfCup = () => {
 
   return (
     <div className={s.container}>
+      <div className={s.newsbox}>
+  <p>
+    {news.map((item) => (
+      <span key={item._id} className={s.marqueeText}>
+        {item.text} &nbsp;&nbsp; {/* Space between items */}
+      </span>
+    ))}
+  </p>
+</div>
       <div className={s.controls}>
-        <div className={s.selecting}>
-          <h2>Select Tournament:</h2>
+        <div  className={s.selecting}>
+          <h3>Select Tournament:</h3>
           <select
             value={selectedTournament}
             onChange={(e) => {
@@ -283,7 +292,7 @@ const NameOfCup = () => {
 
           {selectedTournament && (
             <>
-              <h2>Select Date:</h2>
+              <h3>Select Date:</h3>
               <div className={s.dateButtons}>
                 {availableDates.length > 0 ? (
                   availableDates.map((dateStr) => (
@@ -318,41 +327,35 @@ const NameOfCup = () => {
           )}
         </div>
 
-        <div className={s.newsbox}>
-          <h2>
-            {news.map((item) => (
-              <div key={item._id}>{item.text}</div>
-            ))}
-          </h2>
-        </div>
+        
       </div>
 
       {selectedDate && selectedDate !== "total" && (
         <div className={s.winnerSection}>
           {firstWinner && (
             <div className={s.firstWinnerSection}>
-              <h2>🏆 First Winner</h2>
+              <h5>🏆 First Winner</h5>
               <p>
-                <strong>{firstWinner.name}</strong> :
-                <strong>
+                {firstWinner.name} :
+               
                   {firstWinner.firstPigeonEndTime
                     ? firstWinner.firstPigeonEndTime.toLocaleString()
                     : "Not available"}
-                </strong>{" "}
+                {" "}
               </p>
             </div>
           )}
 
           {lastWinner && (
             <div className={s.LastWinnerSection}>
-              <h2>🥈 Last Winner</h2>
+              <h5>🥈 Last Winner</h5>
               <p>
-                <strong>{lastWinner.name} :</strong>
-                <strong>
+               {lastWinner.name} :
+               
                   {lastWinner.lastWinnerEndTime
                     ? lastWinner.lastWinnerEndTime.toLocaleString()
                     : "Not available"}
-                </strong>
+                
               </p>
             </div>
           )}
