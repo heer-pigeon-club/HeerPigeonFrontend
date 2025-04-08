@@ -381,7 +381,15 @@ const NameOfCup = () => {
           )}
         </div>
       )}
-
+ <div className={s.newsbox}>
+  <p>
+    {news.map((item) => (
+      <span key={item._id} className={s.marqueeText}>
+        {item.text} &nbsp;&nbsp; {/* Space between items */}
+      </span>
+    ))}
+  </p>
+</div>
       <div className={s.participant}>
         <table className={s.table}>
           <thead>

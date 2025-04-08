@@ -1,8 +1,7 @@
 .container {
-  max-width: 95%;
-  margin: 20px auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  width: 100%;
+  margin-top: 1px;
+  background-color: #007bff;
 }
 
 .newsbox {
@@ -36,7 +35,8 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  min-height: 20vh;
+  min-height: 14vh;
+  background-color: lightpink;
   gap: 15px;
   align-items: center;
   justify-content: center;
