@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import style from "./nameofcup.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const s = style;
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const NameOfCup = () => {
@@ -18,6 +18,7 @@ const NameOfCup = () => {
   const [maxPigeons, setMaxPigeons] = useState(0);
   const [availableDates, setAvailableDates] = useState([]); // Change variable name
   const navigate = useNavigate();
+  const { id } = useParams();
   useEffect(() => {
     fetchNews();
     fetchTournaments();
@@ -54,8 +55,25 @@ const NameOfCup = () => {
     try {
       const res = await axios.get(`${API_BASE_URL}/api/tournaments`);
       setTournaments(res.data);
+
       if (res.data.length > 0) {
-        setSelectedTournament(res.data[res.data.length - 1]._id);
+        // Check if an ID is provided in the URL
+        if (id) {
+          const tournamentExists = res.data.find((t) => t._id === id);
+          if (tournamentExists) {
+            setSelectedTournament(id); // Select the tournament from the URL
+          } else {
+            console.warn(
+              "Tournament ID from URL not found, selecting latest tournament"
+            );
+            setSelectedTournament(res.data[res.data.length - 1]._id); // Fallback to the latest tournament
+          }
+        } else {
+          // No ID in the URL, select the latest tournament
+          setSelectedTournament(res.data[res.data.length - 1]._id);
+        }
+      } else {
+        console.warn("No tournaments available");
       }
     } catch (err) {
       console.error("Error fetching tournaments", err);
