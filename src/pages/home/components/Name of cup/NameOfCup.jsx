@@ -316,6 +316,20 @@ const NameOfCup = () => {
               <p>No tournaments available</p>
             )}
           </div>
+          <div>
+            // print selected tournament name also print its start time
+            {tournaments.map((tournament) => {
+              if (tournament._id === selectedTournament) {
+                return (
+                  <div key={tournament._id} className={s.selectedTournament}>
+                    <h4>{tournament.name}</h4>
+                    <p>Start Time: {tournament.startTime}</p>
+                  </div>
+                );
+              }
+              return null;
+            })}
+          </div>
           {selectedTournament && (
             <>
               <h3>Select Date:</h3>
