@@ -9,12 +9,13 @@ import Events from "./pages/home/components/Events/Events";
 import Admin from "./AdminPanel/Admin";
 import Persons from "./AdminPanel/Pages/Touraments/Persons";
 import Login from "./AdminPanel/Pages/Login/Login";
-import PrivateRoute from './AdminPanel/Pages/Login/PrivateRoute'
+import PrivateRoute from "./AdminPanel/Pages/Login/PrivateRoute";
+import NameOfCup from "./pages/home/components/Name of cup/NameOfCup";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-      <Route
+        <Route
           path="/admin"
           element={
             <PrivateRoute>
@@ -23,7 +24,7 @@ function App() {
           }
         />
         <Route path="/tournament/:id/participants" element={<Persons />} />
-        <Route path="/login" element={<Login/>}/>
+        <Route path="/login" element={<Login />} />
         <Route
           path="/*"
           element={
@@ -31,7 +32,8 @@ function App() {
               <Navbar />
               <Events />
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<NameOfCup />} />
+                <Route path="/:id" element={<NameOfCup />} />
                 <Route path="/weather" element={<Weather />} />
                 <Route path="/tournament" element={<Tournament />} />
                 <Route path="/contact" element={<Contact />} />

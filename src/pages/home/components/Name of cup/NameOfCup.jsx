@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import style from "./nameofcup.module.css";
+import { useNavigate } from "react-router-dom";
 const s = style;
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const NameOfCup = () => {
@@ -16,7 +17,7 @@ const NameOfCup = () => {
   const [allownumber, setAllowNumber] = useState(0);
   const [maxPigeons, setMaxPigeons] = useState(0);
   const [availableDates, setAvailableDates] = useState([]); // Change variable name
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchNews();
     fetchTournaments();
@@ -53,9 +54,8 @@ const NameOfCup = () => {
     try {
       const res = await axios.get(`${API_BASE_URL}/api/tournaments`);
       setTournaments(res.data);
-      const pinnedTournament = res.data.find((tournament) => tournament.pinned);
-      if (pinnedTournament) {
-        setSelectedTournament(pinnedTournament._id);
+      if (res.data.length > 0) {
+        setSelectedTournament(res.data[res.data.length - 1]._id);
       }
     } catch (err) {
       console.error("Error fetching tournaments", err);
@@ -258,31 +258,46 @@ const NameOfCup = () => {
 
   return (
     <div className={s.container}>
-      <div className={s.navbar}></div>
-     
+      <div className={s.newsbox}>
+        <p>
+          {news.map((item) => (
+            <span key={item._id} className={s.marqueeText}>
+              {item.text} &nbsp;&nbsp; {/* Space between items */}
+            </span>
+          ))}
+        </p>
+      </div>
       <div className={s.controls}>
-        <div  className={s.selecting}>
+        <div className={s.selecting}>
           <h3>Select Tournament:</h3>
-          <select
-            value={selectedTournament}
-            onChange={(e) => {
-              setSelectedTournament(e.target.value);
-              setSelectedDate("");
-              setParticipants([]);
-              setFlightData({});
-              setFirstWinner(null);
-              setLastWinner(null);
-              setSortedParticipants([]);
-            }}
-          >
-            <option value="">-- Select --</option>
-            {tournaments.map((tournament) => (
-              <option key={tournament._id} value={tournament._id}>
-                {tournament.name}
-              </option>
-            ))}
-          </select>
-
+          <div className={s.tournamentButtons}>
+            {tournaments.length > 0 ? (
+              tournaments.map((tournament) => (
+                <button
+                  key={tournament._id}
+                  className={
+                    selectedTournament === tournament._id
+                      ? s.activeButton
+                      : s.tournamentButton // or create a new `tournamentButton` style if needed
+                  }
+                  onClick={() => {
+                    setSelectedTournament(tournament._id);
+                    setSelectedDate("");
+                    setParticipants([]);
+                    setFlightData({});
+                    setFirstWinner(null);
+                    setLastWinner(null);
+                    setSortedParticipants([]);
+                    navigate(`/${tournament._id}`);
+                  }}
+                >
+                  {tournament.name}
+                </button>
+              ))
+            ) : (
+              <p>No tournaments available</p>
+            )}
+          </div>
           {selectedTournament && (
             <>
               <h3>Select Date:</h3>
@@ -319,8 +334,6 @@ const NameOfCup = () => {
             </>
           )}
         </div>
-
-        
       </div>
 
       {selectedDate && selectedDate !== "total" && (
@@ -330,11 +343,9 @@ const NameOfCup = () => {
               <h5>🏆 First Winner</h5>
               <p>
                 {firstWinner.name} :
-               
-                  {firstWinner.firstPigeonEndTime
-                    ? firstWinner.firstPigeonEndTime.toLocaleString()
-                    : "Not available"}
-                {" "}
+                {firstWinner.firstPigeonEndTime
+                  ? firstWinner.firstPigeonEndTime.toLocaleString()
+                  : "Not available"}{" "}
               </p>
             </div>
           )}
@@ -343,12 +354,10 @@ const NameOfCup = () => {
             <div className={s.LastWinnerSection}>
               <h5>🥈 Last Winner</h5>
               <p>
-               {lastWinner.name} :
-               
-                  {lastWinner.lastWinnerEndTime
-                    ? lastWinner.lastWinnerEndTime.toLocaleString()
-                    : "Not available"}
-                
+                {lastWinner.name} :
+                {lastWinner.lastWinnerEndTime
+                  ? lastWinner.lastWinnerEndTime.toLocaleString()
+                  : "Not available"}
               </p>
             </div>
           )}
