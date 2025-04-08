@@ -3,8 +3,9 @@ body
     padding: 0;
     margin: 0;
     overflow-x: hidden;
-    width: 100%;
-
+    max-width: 100%;
+    justify-content: center;
+   
 }
 /* Hide Google Translate top bar */
 .goog-te-banner-frame {
@@ -12,14 +13,15 @@ body
 }
 
 /* Force body to stay in the correct position */
-body {
-  top: 0px !important;
-  position: relative !important;
-  width: 100%;
-}
+
 
 /* Hide floating Google Translate popup */
 .goog-te-gadget {
   display: none !important;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

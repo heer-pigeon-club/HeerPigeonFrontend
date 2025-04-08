@@ -258,15 +258,8 @@ const NameOfCup = () => {
 
   return (
     <div className={s.container}>
-      <div className={s.newsbox}>
-  <p>
-    {news.map((item) => (
-      <span key={item._id} className={s.marqueeText}>
-        {item.text} &nbsp;&nbsp; {/* Space between items */}
-      </span>
-    ))}
-  </p>
-</div>
+      <div className={s.navbar}></div>
+     
       <div className={s.controls}>
         <div  className={s.selecting}>
           <h3>Select Tournament:</h3>
@@ -361,7 +354,15 @@ const NameOfCup = () => {
           )}
         </div>
       )}
-
+ <div className={s.newsbox}>
+  <p>
+    {news.map((item) => (
+      <span key={item._id} className={s.marqueeText}>
+        {item.text} &nbsp;&nbsp; {/* Space between items */}
+      </span>
+    ))}
+  </p>
+</div>
       <div className={s.participant}>
         <table className={s.table}>
           <thead>

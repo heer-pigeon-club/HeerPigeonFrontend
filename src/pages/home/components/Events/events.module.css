@@ -5,6 +5,7 @@
   align-items: center;
   position: relative;
   height: 10rem;
+  align-items:center;
 }
 
 .carousel {
@@ -39,6 +40,7 @@
 {
   .container 
   {
-    height: 6rem;
+    height: 7rem;
+    width: 95%;
   }
 }
