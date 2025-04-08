@@ -59,10 +59,10 @@ const Tournament = () => {
     fetchTournaments();
     addTournament(false);
   };
-  const handlePinTournament = async (id) => {
-    await axios.put(`${API_BASE_URL}/api/tournaments/${id}/pin`);
-    fetchTournaments();
-  };
+  // const handlePinTournament = async (id) => {
+  //   await axios.put(`${API_BASE_URL}/api/tournaments/${id}/pin`);
+  //   fetchTournaments();
+  // };
 
   const handleEditTournament = async () => {
     await axios.put(
@@ -262,7 +262,7 @@ const Tournament = () => {
               <th>Edit</th>
               <th>Remove</th>
               <th>Details</th>
-              <th>Pin</th>
+              {/* <th>Pin</th> */}
             </tr>
           </thead>
           <tbody>
@@ -293,7 +293,7 @@ const Tournament = () => {
                     <IoIosPeople className={s.addperson} />
                   </NavLink>
                 </td>
-                <td>
+                {/* <td>
                   {tournament.pinned ? (
                     <AiFillPushpin
                       className={s.pinned}
@@ -305,7 +305,7 @@ const Tournament = () => {
                       onClick={() => handlePinTournament(tournament._id)}
                     />
                   )}
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

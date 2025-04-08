@@ -62,6 +62,20 @@
   margin-top: 1rem;
 }
 
+.tournamentButton {
+  padding: 8px 16px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.activeButton {
+  background-color: #007bff;
+  font-weight: bold;
+}
+
 .firstWinnerSection,
 .LastWinnerSection {
   background-color: #444444;
