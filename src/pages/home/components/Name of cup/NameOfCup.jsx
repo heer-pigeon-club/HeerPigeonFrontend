@@ -317,7 +317,6 @@ const NameOfCup = () => {
             )}
           </div>
           <div>
-            // print selected tournament name also print its start time
             {tournaments.map((tournament) => {
               if (tournament._id === selectedTournament) {
                 return (
