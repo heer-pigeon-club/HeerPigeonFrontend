@@ -85,7 +85,7 @@ body {
 }
 .routing
 {
-  width: 50%;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   height: 30%;
@@ -285,7 +285,7 @@ body {
   }
   .table th,
   .table td {
-    font-size: 10px;
+    font-size: 8px;
   }
   .img {
     width: 1.5rem;
