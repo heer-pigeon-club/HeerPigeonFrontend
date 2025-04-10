@@ -12,7 +12,11 @@ const Persons = () => {
   const [participants, setParticipants] = useState([]);
   const [editParticipant, setEditParticipant] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(() => {
+    // Default to today's date
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  });
   const [selectedPigeon, setSelectedPigeon] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -102,7 +106,6 @@ const Persons = () => {
   // Open edit form
   const handleEdit = (person) => {
     setSelectedPerson(person);
-    setSelectedDate("");
     setSelectedPigeon("");
     setStartTime(tournamentDates.startTime); // Use tournament start time
     setEndTime("");
@@ -300,8 +303,8 @@ const Persons = () => {
             type="date"
             min={tournamentDates.startDate}
             max={tournamentDates.endDate}
-            
-            onChange={(e) => setSelectedDate(e.target.value)}
+            value={selectedDate} // Default to today's date or previously selected date
+            onChange={(e) => setSelectedDate(e.target.value)} // Persist selected date
           />
           <h3>Select Pigeon</h3>
           <select
