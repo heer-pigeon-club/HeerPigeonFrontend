@@ -11,37 +11,42 @@ import Persons from "./AdminPanel/Pages/Touraments/Persons";
 import Login from "./AdminPanel/Pages/Login/Login";
 import PrivateRoute from "./AdminPanel/Pages/Login/PrivateRoute";
 import NameOfCup from "./pages/home/components/Name of cup/NameOfCup";
+
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute>
-              <Admin />
-            </PrivateRoute>
-          }
-        />
-        <Route path="/tournament/:id/participants" element={<Persons />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/*"
-          element={
-            <>
-              <Events />
-              <Routes>
-                <Route path="/" element={<NameOfCup />} />
-                <Route path="/:id" element={<NameOfCup />} />
-                <Route path="/weather" element={<Weather />} />
-                <Route path="/tournament" element={<Tournament />} />
-                <Route path="/contact" element={<Contact />} />
-              </Routes>
-            </>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <div style={{ fontFamily: "'Noto Nastaliq Urdu', serif" }}>
+      {" "}
+      {/* Apply Noto Nastaliq Urdu globally */}
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute>
+                <Admin />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/tournament/:id/participants" element={<Persons />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/*"
+            element={
+              <>
+                <Events />
+                <Routes>
+                  <Route path="/" element={<NameOfCup />} />
+                  <Route path="/:id" element={<NameOfCup />} />
+                  <Route path="/weather" element={<Weather />} />
+                  <Route path="/tournament" element={<Tournament />} />
+                  <Route path="/contact" element={<Contact />} />
+                </Routes>
+              </>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

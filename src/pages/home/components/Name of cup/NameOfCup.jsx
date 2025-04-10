@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import style from "./nameofcup.module.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import Navbar from "../NavBar/Navbar";
 const s = style;
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const NameOfCup = () => {
@@ -276,8 +277,8 @@ const NameOfCup = () => {
 
   return (
     <div className={s.container}>
-      
       <div className={s.controls}>
+        <NavLink className={s.navBtn}>Home</NavLink>
         <div className={s.selecting}>
           <div className={s.tournamentButtons}>
             {tournaments.length > 0 ? (
@@ -307,57 +308,23 @@ const NameOfCup = () => {
               <p>No tournaments available</p>
             )}
           </div>
-          <div>
-            {tournaments.map((tournament) => {
-              if (tournament._id === selectedTournament) {
-                return (
-                  <div key={tournament._id} className={s.selectedTournament}>
-                    <h4>{tournament.name}</h4>
-                    <p>Start Time: {tournament.startTime}</p>
-                  </div>
-                );
-              }
-              return null;
-            })}
-          </div>
-          {selectedTournament && (
-            <>
-              <h3>Select Date:</h3>
-              <div className={s.dateButtons}>
-                {availableDates.length > 0 ? (
-                  availableDates.map((dateStr) => (
-                    <button
-                      key={dateStr}
-                      className={
-                        selectedDate === dateStr ? s.activeButton : s.dateButton
-                      }
-                      onClick={() => {
-                        setSelectedDate(dateStr);
-                        calculateWinnersPerDate(dateStr);
-                      }}
-                    >
-                      {new Date(dateStr).toDateString()}
-                    </button>
-                  ))
-                ) : (
-                  <p></p>
-                )}
-                <button
-                  className={
-                    selectedDate === "total" ? s.activeButton : s.dateButton
-                  }
-                  onClick={() => {
-                    setSelectedDate("total");
-                  }}
-                >
-                  Total
-                </button>
-              </div>
-            </>
-          )}
+         
+          
         </div>
-      </div>
+        <NavLink className={s.navBtn} to="/tournament">Other</NavLink>
+        <NavLink className={s.navBtn} to="/weather">Weather</NavLink>
+        <NavLink className={s.navBtn} to="/contact">Contact</NavLink>
 
+      </div>
+      <div className={s.newsbox}>
+        <p>
+          {news.map((item) => (
+            <span key={item._id} className={s.marqueeText}>
+              {item.text} &nbsp;&nbsp; {/* Space between items */}
+            </span>
+          ))}
+        </p>
+      </div>
       {selectedDate && selectedDate !== "total" && (
         <div className={s.winnerSection}>
           {firstWinner && (
@@ -385,14 +352,57 @@ const NameOfCup = () => {
           )}
         </div>
       )}
-      <div className={s.newsbox}>
-        <p>
-          {news.map((item) => (
-            <span key={item._id} className={s.marqueeText}>
-              {item.text} &nbsp;&nbsp; {/* Space between items */}
-            </span>
-          ))}
-        </p>
+     
+      <div className={s.tournamentBox}>
+     
+            {tournaments.map((tournament) => {
+              if (tournament._id === selectedTournament) {
+                return (
+                  <div key={tournament._id} className={s.selectedTournament}>
+                    <h4>{tournament.name}</h4>
+                    <p>Start Time: {tournament.startTime}</p>
+                  </div>
+                );
+              }
+              return null;
+            })}
+      </div>
+      <div className={s.dateBox}>
+        
+      {selectedTournament && (
+            <>
+              <div className={s.dateButtons}>
+                {availableDates.length > 0 ? (
+                  availableDates.map((dateStr) => (
+                    <button
+                      key={dateStr}
+                      className={
+                        selectedDate === dateStr ? s.activeButtons : s.dateButtons
+                      }
+                      onClick={() => {
+                        setSelectedDate(dateStr);
+                        calculateWinnersPerDate(dateStr);
+                      }}
+                    >
+                      {new Date(dateStr).toDateString()}
+                    </button>
+                  ))
+                ) : (
+                  <p></p>
+                )}
+                <button
+                  className={
+                    selectedDate === "total" ? s.activeButtons : s.dateButtons
+                  }
+                  onClick={() => {
+                    setSelectedDate("total");
+                  }}
+                >
+                  Total
+                </button>
+              </div>
+            </>
+          )}
       </div>
       <div className={s.participant}>
         <table className={s.table}>
@@ -414,7 +424,7 @@ const NameOfCup = () => {
                   {[...Array(maxPigeons).keys()].map((i) => (
                     <th key={i}>Pigeon {i + 1}</th>
                   ))}
-                  <th>Flying Time ({selectedDate})</th>
+                  <th>Flying Time </th>
                 </>
               )}
             </tr>
@@ -463,7 +473,7 @@ const NameOfCup = () => {
                     : "";
 
                 return (
-                  <tr key={participant._id}>
+                  <tr key={participant._id} className={s.row}>
                     <td className={s.img}>
                       <img src={participant.imagePath || ""} />
                     </td>

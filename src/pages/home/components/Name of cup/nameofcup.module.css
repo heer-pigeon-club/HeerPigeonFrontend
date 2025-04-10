@@ -1,4 +1,9 @@
+body {
+  font-family: "Noto Nastaliq Urdu", serif; /* Apply Noto Nastaliq Urdu globally */
+}
+
 .container {
+  font-family: "Noto Nastaliq Urdu", serif; /* Ensure Noto Nastaliq Urdu is applied to this component */
   width: 100%;
   margin-top: 1px;
 }
@@ -6,19 +11,59 @@
 .newsbox {
   width: 100%;
   height: 2rem;
-  background-color: #3a3a3a;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: whitesmoke;
   overflow: hidden;
   white-space: nowrap;
   margin-bottom: 3px;
+  font-family: "Noto Nastaliq Urdu", serif;
+}
+.navBtn {
+  color: whitesmoke;
+  text-decoration: none;
+  font-family: "Noto Nastaliq Urdu", serif;
+}
+.tournamentBox {
+  font-family: "Noto Nastaliq Urdu", serif;
+  width: 100%;
+  height: 2rem;
+  background-color: #3a3a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 3px;
+  flex-direction: row;
+  margin-top: 10px;
+}
+.dateBox {
+  font-family: "Noto Nastaliq Urdu", serif;
+  width: 100%;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 3px;
+  flex-direction: row;
+}
+.selectedTournament {
+  font-family: "Noto Nastaliq Urdu", serif;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: lightgreen;
 }
 .newsbox p {
+  font-family: "Noto Nastaliq Urdu", serif;
   display: inline-block;
   animation: floatText 15s linear infinite;
-  font-size: 13px;
+  font-size: 16px;
 }
 @keyframes floatText {
   0% {
@@ -31,14 +76,13 @@
 }
 
 .controls {
+  font-family: "Noto Nastaliq Urdu", serif;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   min-height: 20vh;
-  background-color: lightpink;
+  background: linear-gradient(to right, #0b3d2e, #116d52);
   gap: 15px;
-  align-items: center;
-  justify-content: center;
 }
 
 .selecting {
@@ -48,17 +92,18 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 .winnerSection {
   width: 100%;
   color: whitesmoke;
-  height: 5rem;
+  height: 2rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-radius: 1rem;
-  margin-top: 1rem;
+  background-color: lightsalmon;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .tournamentButton {
@@ -67,17 +112,26 @@
   cursor: pointer;
   padding: 10px;
   font-size: 1rem;
+  color: whitesmoke;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .activeButton {
-  background-color: #007bff;
-  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 1rem;
+  color: whitesmoke;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
-
+.activeButtons {
+  background-color: lightskyblue;
+  font-weight: bold;
+  font-family: "Noto Nastaliq Urdu", serif;
+}
 .firstWinnerSection,
 .LastWinnerSection {
-  background-color: #444444;
-  margin-bottom: 1rem;
   border-radius: 0.75rem;
   width: 50%;
   text-align: center;
@@ -85,20 +139,24 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .firstWinnerSection h2,
 .LastWinnerSection h2 {
   margin-bottom: 0.5rem;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .firstWinnerSection p,
 .LastWinnerSection p {
+  font-family: "Noto Nastaliq Urdu", serif;
   margin: 0;
 }
 
 .firstWinnerSection strong,
 .LastWinnerSection strong {
+  font-family: "Noto Nastaliq Urdu", serif;
   font-weight: bold;
 }
 
@@ -106,15 +164,11 @@
   font-size: 16px;
   font-weight: bold;
   color: #ccc;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
-.controls select,
-.controls input {
-  width: 100%;
-  font-size: 14px;
-  border: 1px solid #444;
-  border-radius: 5px;
-}
+
+
 
 /* Responsive Table */
 .table {
@@ -122,23 +176,32 @@
   border-collapse: collapse;
   margin-top: 10px;
   overflow-x: auto;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .table th,
 .table td {
-  border: 1px solid #444;
   text-align: center;
 }
+.row:hover {
+  background-color: yellow;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  font-family: "Noto Nastaliq Urdu", serif;
+}
+
 
 .table th {
   background-color: #333;
   color: #fff;
   font-size: 16px;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .table td {
   background-color: #d9d9d9;
   font-size: 14px;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .table img {
@@ -148,6 +211,7 @@
 
 .nameOfPerson {
   width: 5rem;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .img {
@@ -155,10 +219,6 @@
   height: 2rem;
 }
 
-.table tr:hover {
-  background-color: #3a3a3a;
-  transition: 0.3s;
-}
 
 .img img {
   width: 100%;
@@ -169,7 +229,7 @@
 .participant {
   width: 100%;
   height: auto;
-  background-color: lightcoral;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 /* Buttons */
@@ -177,6 +237,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .dateButton {
@@ -186,25 +247,25 @@
   cursor: pointer;
   border-radius: 5px;
   transition: 0.3s;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .dateButton:hover {
   background-color: #666;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 .activeButton {
-  background-color: #007bff;
   color: white;
   font-weight: bold;
+  font-family: "Noto Nastaliq Urdu", serif;
 }
 
 @media (max-width: 600px) {
-  .controls
-  {
+  .controls {
     margin-top: 1rem;
-    background-color: green;
-    height: 20vh;
 
+    height: 20vh;
   }
   .newsbox {
     width: 100%;
@@ -223,7 +284,7 @@
   }
   .table th,
   .table td {
-    font-size: 6px;
+    font-size: 10px;
   }
   .img {
     width: 1.5rem;
@@ -233,7 +294,7 @@
 
 @media (min-width: 601px) and (max-width: 1024px) {
   .container {
-    max-width: 90%;
+    max-width: 100%;
   }
   .newsbox {
     width: 100%;
@@ -243,7 +304,7 @@
   }
   .table th,
   .table td {
-    font-size: 14px;
+    font-size: 18px;
   }
 }
 
@@ -258,3 +319,6 @@
     width: 60%;
   }
 }
+
+
+
