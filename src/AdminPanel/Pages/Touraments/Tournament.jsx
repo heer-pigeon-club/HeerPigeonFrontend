@@ -35,9 +35,18 @@ const Tournament = () => {
     image: null,
     pigeons: "", // Should be a string/number, not an array
   });
+  const [pigeonStats, setPigeonStats] = useState({
+    total: 0,
+    lofted: 0,
+    remaining: 0,
+  });
   useEffect(() => {
     fetchTournaments();
   }, []);
+
+  useEffect(() => {
+    calculatePigeonStats();
+  }, [data]);
 
   const fetchTournaments = async () => {
     const response = await axios.get(`${API_BASE_URL}/api/tournaments`);
@@ -115,11 +124,52 @@ const Tournament = () => {
     }
   };
 
+  const calculatePigeonStats = async () => {
+    try {
+      let totalPigeons = 0;
+      let loftedPigeons = 0;
+
+      for (const tournament of data) {
+        const response = await axios.get(
+          `${API_BASE_URL}/api/tournaments/${tournament._id}/participants`
+        );
+
+        const participants = response.data;
+        participants.forEach((participant) => {
+          totalPigeons += participant.pigeons.length;
+
+          participant.pigeons.forEach((pigeon) => {
+            if (pigeon.lofted) {
+              loftedPigeons++;
+            }
+          });
+        });
+      }
+
+      const remainingPigeons = totalPigeons - loftedPigeons;
+
+      setPigeonStats({
+        total: totalPigeons,
+        lofted: loftedPigeons,
+        remaining: remainingPigeons,
+      });
+    } catch (error) {
+      console.error("Error calculating pigeon stats:", error);
+    }
+  };
+
   return (
     <div className={s.container}>
       <div className={s.top}>
         <h1>Tournament</h1>
         <IoAddCircleOutline className={s.add} onClick={adding} />
+      </div>
+
+      {/* Display Pigeon Stats */}
+      <div className={s.stats}>
+        <h3>Total Pigeons: {pigeonStats.total}</h3>
+        <h3>Lofted Pigeons: {pigeonStats.lofted}</h3>
+        <h3>Remaining Pigeons: {pigeonStats.remaining}</h3>
       </div>
 
       {/* Add Tournament Popup */}

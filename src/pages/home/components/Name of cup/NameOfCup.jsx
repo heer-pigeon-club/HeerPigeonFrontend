@@ -18,6 +18,11 @@ const NameOfCup = () => {
   const [allownumber, setAllowNumber] = useState(0);
   const [maxPigeons, setMaxPigeons] = useState(0);
   const [availableDates, setAvailableDates] = useState([]); // Change variable name
+  const [pigeonStats, setPigeonStats] = useState({
+    total: 0,
+    lofted: 0,
+    remaining: 0,
+  });
   const navigate = useNavigate();
   const { id } = useParams();
   useEffect(() => {
@@ -30,6 +35,7 @@ const NameOfCup = () => {
       fetchParticipants(selectedTournament);
       const tournament = tournaments.find((t) => t._id === selectedTournament);
       setMaxPigeons(tournament?.pigeons || 0);
+      calculatePigeonStats(selectedTournament);
     }
   }, [selectedTournament, tournaments]);
 
@@ -275,15 +281,53 @@ const NameOfCup = () => {
     }
   }, [participants, flightData]);
 
+  const calculatePigeonStats = async (tournamentId) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/api/tournaments/${tournamentId}/participants`
+      );
+
+      const participants = response.data;
+      let totalPigeons = 0;
+      let loftedPigeons = 0;
+
+      participants.forEach((participant) => {
+        totalPigeons += participant.pigeons.length;
+
+        participant.pigeons.forEach((pigeon) => {
+          if (pigeon.lofted) {
+            loftedPigeons++;
+          }
+        });
+      });
+
+      const remainingPigeons = totalPigeons - loftedPigeons;
+
+      setPigeonStats({
+        total: totalPigeons,
+        lofted: loftedPigeons,
+        remaining: remainingPigeons,
+      });
+    } catch (error) {
+      console.error("Error calculating pigeon stats:", error);
+    }
+  };
+
   return (
     <div className={s.container}>
       <div className={s.controls}>
-      <div className={s.routing}>
-        <NavLink className={s.navBtn}>Home</NavLink>
+        <div className={s.routing}>
+          <NavLink className={s.navBtn}>Home</NavLink>
 
-        <NavLink className={s.navBtn} to="/tournament">Other</NavLink>
-        <NavLink className={s.navBtn} to="/weather">Weather</NavLink>
-        <NavLink className={s.navBtn} to="/contact">Contact</NavLink>
+          <NavLink className={s.navBtn} to="/tournament">
+            Other
+          </NavLink>
+          <NavLink className={s.navBtn} to="/weather">
+            Weather
+          </NavLink>
+          <NavLink className={s.navBtn} to="/contact">
+            Contact
+          </NavLink>
         </div>
         <div className={s.selecting}>
           <div className={s.tournamentButtons}>
@@ -314,11 +358,7 @@ const NameOfCup = () => {
               <p>No tournaments available</p>
             )}
           </div>
-         
-          
         </div>
-            
-
       </div>
       <div className={s.newsbox}>
         <p>
@@ -330,57 +370,59 @@ const NameOfCup = () => {
         </p>
       </div>
      
-     
       <div className={s.tournamentBox}>
-     
-            {tournaments.map((tournament) => {
-              if (tournament._id === selectedTournament) {
-                return (
-                  <div key={tournament._id} className={s.selectedTournament}>
-                    <h4>{tournament.name}</h4>
-                    <p>Start Time: {tournament.startTime}</p>
-                  </div>
-                );
-              }
-              return null;
-            })}
+        {tournaments.map((tournament) => {
+          if (tournament._id === selectedTournament) {
+            return (
+              <div key={tournament._id} className={s.selectedTournament}>
+                <h4>{tournament.name}</h4>
+                <p>Start Time: {tournament.startTime}</p>
+              </div>
+            );
+          }
+          return null;
+        })}
       </div>
       <div className={s.dateBox}>
-        
-      {selectedTournament && (
-            <>
-              <div className={s.dateButtons}>
-                {availableDates.length > 0 ? (
-                  availableDates.map((dateStr) => (
-                    <button
-                      key={dateStr}
-                      className={
-                        selectedDate === dateStr ? s.activeButtons : s.dateButtons
-                      }
-                      onClick={() => {
-                        setSelectedDate(dateStr);
-                        calculateWinnersPerDate(dateStr);
-                      }}
-                    >
-                      {new Date(dateStr).toDateString()}
-                    </button>
-                  ))
-                ) : (
-                  <p></p>
-                )}
-                <button
-                  className={
-                    selectedDate === "total" ? s.activeButtons : s.dateButtons
-                  }
-                  onClick={() => {
-                    setSelectedDate("total");
-                  }}
-                >
-                  Total
-                </button>
-              </div>
-            </>
-          )}
+        {selectedTournament && (
+          <>
+            <div className={s.dateButtons}>
+              {availableDates.length > 0 ? (
+                availableDates.map((dateStr) => (
+                  <button
+                    key={dateStr}
+                    className={
+                      selectedDate === dateStr ? s.activeButtons : s.dateButtons
+                    }
+                    onClick={() => {
+                      setSelectedDate(dateStr);
+                      calculateWinnersPerDate(dateStr);
+                    }}
+                  >
+                    {new Date(dateStr).toDateString()}
+                  </button>
+                ))
+              ) : (
+                <p></p>
+              )}
+              <button
+                className={
+                  selectedDate === "total" ? s.activeButtons : s.dateButtons
+                }
+                onClick={() => {
+                  setSelectedDate("total");
+                }}
+              >
+                Total
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+      <div className={s.status}>
+      <p>Total Pigeons: {pigeonStats.total}</p>
+        <p>Lofted Pigeons: {pigeonStats.lofted}</p>
+        <p>Remaining Pigeons: {pigeonStats.remaining}</p>
       </div>
       {selectedDate && selectedDate !== "total" && (
         <div className={s.winnerSection}>
@@ -499,6 +541,7 @@ const NameOfCup = () => {
           </tbody>
         </table>
       </div>
+     
     </div>
   );
 };
