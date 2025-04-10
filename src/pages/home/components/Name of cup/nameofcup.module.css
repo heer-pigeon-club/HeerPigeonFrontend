@@ -299,7 +299,31 @@ body {
   padding: 5px;
 }
 
+.tournamentButton {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 0.7rem;
+  color: whitesmoke;
+  font-family: "Noto Nastaliq Urdu", serif;
+}
 
+.activeButton {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 0.8rem;
+  color: whitesmoke;
+  font-family: "Noto Nastaliq Urdu", serif;
+}
+.selectedTournament
+{
+  font-family: "Noto Nastaliq Urdu", serif;
+  font-size: 0.8rem;
+  
+}
 }
 
 
