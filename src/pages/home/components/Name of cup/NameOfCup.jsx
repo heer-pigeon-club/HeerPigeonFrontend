@@ -211,19 +211,10 @@ const NameOfCup = () => {
         // Take only up to allowed pigeons
         const validFlights = flightsPerDay.slice(0, allowedPigeons);
 
-        // First pigeon’s time
-        const firstPigeonTime =
-          validFlights.length > 0 ? validFlights[0].time : 0;
-
-        let dailyTotal = validFlights.reduce(
-          (sum, flight) => sum + flight.time,
-          0
-        );
-
-        // Adjust daily total if there are lofted pigeons
-        if (validFlights.some((flight) => flight.lofted)) {
-          dailyTotal = 0; // Reset daily total if any pigeon is lofted
-        }
+        // Calculate daily total time excluding lofted pigeons
+        let dailyTotal = validFlights.reduce((sum, flight) => {
+          return flight.lofted ? sum : sum + flight.time;
+        }, 0);
 
         dailyFlightTimes[date] = Math.max(dailyTotal, 0);
         totalFlightTime += dailyFlightTimes[date];
