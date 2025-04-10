@@ -220,13 +220,9 @@ const NameOfCup = () => {
           0
         );
 
-        // Adjust daily total if there are no lofted pigeons
-        if (
-          !validFlights.some((flight) => flight.lofted) &&
-          firstPigeonTime > 0 &&
-          validFlights.length === allowedPigeons
-        ) {
-          dailyTotal -= firstPigeonTime;
+        // Adjust daily total if there are lofted pigeons
+        if (validFlights.some((flight) => flight.lofted)) {
+          dailyTotal = 0; // Reset daily total if any pigeon is lofted
         }
 
         dailyFlightTimes[date] = Math.max(dailyTotal, 0);
@@ -291,15 +287,23 @@ const NameOfCup = () => {
       let totalPigeons = 0;
       let loftedPigeons = 0;
 
-      participants.forEach((participant) => {
+      // Fetch flight data for each participant to calculate lofted pigeons
+      for (const participant of participants) {
+        const flightResponse = await axios.get(
+          `${API_BASE_URL}/api/participants/${participant._id}/flights`
+        );
+
+        const flights = flightResponse.data.flightData || [];
+
         totalPigeons += participant.pigeons.length;
 
-        participant.pigeons.forEach((pigeon) => {
-          if (pigeon.lofted) {
+        // Count lofted pigeons based on flight data
+        flights.forEach((flight) => {
+          if (flight.lofted) {
             loftedPigeons++;
           }
         });
-      });
+      }
 
       const remainingPigeons = totalPigeons - loftedPigeons;
 
@@ -369,7 +373,7 @@ const NameOfCup = () => {
           ))}
         </p>
       </div>
-     
+
       <div className={s.tournamentBox}>
         {tournaments.map((tournament) => {
           if (tournament._id === selectedTournament) {
@@ -420,7 +424,7 @@ const NameOfCup = () => {
         )}
       </div>
       <div className={s.status}>
-      <p>Total Pigeons: {pigeonStats.total}</p>
+        <p>Total Pigeons: {pigeonStats.total}</p>
         <p>Lofted Pigeons: {pigeonStats.lofted}</p>
         <p>Remaining Pigeons: {pigeonStats.remaining}</p>
       </div>
@@ -467,7 +471,7 @@ const NameOfCup = () => {
                 </>
               ) : (
                 <>
-                  <th>Start Time</th>
+                  {/* <th>Start Time</th> */}
                   {[...Array(maxPigeons).keys()].map((i) => (
                     <th key={i}>Pigeon {i + 1}</th>
                   ))}
@@ -525,7 +529,7 @@ const NameOfCup = () => {
                       <img src={participant.imagePath || ""} />
                     </td>
                     <td>{participant.name}</td>
-                    <td>{startTime}</td>
+                    {/* <td>{startTime}</td> */}
                     {[...Array(maxPigeons).keys()].map((i) => (
                       <td key={i}>
                         {selectedFlights[i]?.lofted
@@ -541,7 +545,6 @@ const NameOfCup = () => {
           </tbody>
         </table>
       </div>
-     
     </div>
   );
 };

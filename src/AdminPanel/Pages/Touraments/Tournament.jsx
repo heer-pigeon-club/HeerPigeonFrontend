@@ -129,12 +129,15 @@ const Tournament = () => {
       let totalPigeons = 0;
       let loftedPigeons = 0;
 
+      // Loop through each tournament to fetch participants
       for (const tournament of data) {
         const response = await axios.get(
           `${API_BASE_URL}/api/tournaments/${tournament._id}/participants`
         );
 
         const participants = response.data;
+
+        // Calculate total and lofted pigeons for each participant
         participants.forEach((participant) => {
           totalPigeons += participant.pigeons.length;
 
@@ -146,8 +149,44 @@ const Tournament = () => {
         });
       }
 
+      // Calculate remaining pigeons
       const remainingPigeons = totalPigeons - loftedPigeons;
 
+      // Update state with calculated stats
+      setPigeonStats({
+        total: totalPigeons,
+        lofted: loftedPigeons,
+        remaining: remainingPigeons,
+      });
+    } catch (error) {
+      console.error("Error calculating pigeon stats:", error);
+    }
+  };
+
+  const calculatePigeonStatsForTournament = async (tournamentId) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/api/tournaments/${tournamentId}/participants`
+      );
+
+      const participants = response.data;
+      let totalPigeons = 0;
+      let loftedPigeons = 0;
+
+      // Calculate total and lofted pigeons for the selected tournament
+      participants.forEach((participant) => {
+        totalPigeons += participant.pigeons.length;
+
+        participant.pigeons.forEach((pigeon) => {
+          if (pigeon.lofted) {
+            loftedPigeons++;
+          }
+        });
+      });
+
+      const remainingPigeons = totalPigeons - loftedPigeons;
+
+      // Update state with calculated stats
       setPigeonStats({
         total: totalPigeons,
         lofted: loftedPigeons,
@@ -165,12 +204,10 @@ const Tournament = () => {
         <IoAddCircleOutline className={s.add} onClick={adding} />
       </div>
 
+    
+
       {/* Display Pigeon Stats */}
-      <div className={s.stats}>
-        <h3>Total Pigeons: {pigeonStats.total}</h3>
-        <h3>Lofted Pigeons: {pigeonStats.lofted}</h3>
-        <h3>Remaining Pigeons: {pigeonStats.remaining}</h3>
-      </div>
+    
 
       {/* Add Tournament Popup */}
       {tournament && (
