@@ -29,7 +29,6 @@ function App() {
           path="/*"
           element={
             <>
-              <Navbar />
               <Events />
               <Routes>
                 <Route path="/" element={<NameOfCup />} />

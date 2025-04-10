@@ -1,7 +1,6 @@
 .container {
   width: 100%;
   margin-top: 1px;
-  background-color: #007bff;
 }
 
 .newsbox {
@@ -35,7 +34,7 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  min-height: 14vh;
+  min-height: 20vh;
   background-color: lightpink;
   gap: 15px;
   align-items: center;
@@ -63,12 +62,11 @@
 }
 
 .tournamentButton {
-  padding: 8px 16px;
-  background-color: #333;
-  color: white;
   border: none;
-  border-radius: 8px;
+  background-color: transparent;
   cursor: pointer;
+  padding: 10px;
+  font-size: 1rem;
 }
 
 .activeButton {
@@ -201,6 +199,13 @@
 }
 
 @media (max-width: 600px) {
+  .controls
+  {
+    margin-top: 1rem;
+    background-color: green;
+    height: 20vh;
+
+  }
   .newsbox {
     width: 100%;
   }
