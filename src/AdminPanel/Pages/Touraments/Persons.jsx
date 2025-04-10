@@ -17,7 +17,8 @@ const Persons = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
-  const [selectedPigeon, setSelectedPigeon] = useState("");
+  const [selectedPigeon, setSelectedPigeon] = useState(""); // Default pigeon selection
+  const [nextPigeonIndex, setNextPigeonIndex] = useState(0); // Track the next pigeon index
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -67,7 +68,7 @@ const Persons = () => {
             : p
         )
       );
-      setEditParticipant(false);
+      saveAndClosePopup(); // Save and close the popup
     } catch (error) {
       console.error("Error lofting pigeon:", error);
       setErrorMessage("Failed to mark pigeon as lofted.");
@@ -106,7 +107,10 @@ const Persons = () => {
   // Open edit form
   const handleEdit = (person) => {
     setSelectedPerson(person);
-    setSelectedPigeon("");
+    setSelectedDate(
+      (prevDate) => prevDate || new Date().toISOString().split("T")[0]
+    ); // Default to today's date
+    setSelectedPigeon(person.pigeons[nextPigeonIndex] || ""); // Automatically select the next pigeon
     setStartTime(tournamentDates.startTime); // Use tournament start time
     setEndTime("");
     setEditParticipant(true);
@@ -227,11 +231,21 @@ const Persons = () => {
             : p
         )
       );
-      setEditParticipant(false);
+      saveAndClosePopup(); // Save and close the popup
     } catch (error) {
       console.error("Error saving flight data:", error);
       setErrorMessage("Failed to save flight data. Please try again.");
     }
+  };
+  const saveAndClosePopup = () => {
+    const currentIndex = selectedPerson.pigeons.indexOf(selectedPigeon);
+    if (
+      currentIndex !== -1 &&
+      currentIndex + 1 < selectedPerson.pigeons.length
+    ) {
+      setNextPigeonIndex(currentIndex + 1); // Save the next pigeon index
+    }
+    setEditParticipant(false); // Close the popup
   };
   return (
     <div className={s.container}>
