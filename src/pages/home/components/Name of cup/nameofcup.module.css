@@ -149,7 +149,7 @@ body {
 
 .firstWinnerSection h2,
 .LastWinnerSection h2 {
-  margin-bottom: 0.5rem;
+
   font-family: "Noto Nastaliq Urdu", serif;
 }
 
@@ -318,6 +318,10 @@ body {
   font-size: 0.8rem;
   
 }
+.winnerSection {
+  font-size: 0.7rem;
+}
+
 }
 
 
