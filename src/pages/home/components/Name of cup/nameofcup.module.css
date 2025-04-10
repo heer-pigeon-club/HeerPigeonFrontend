@@ -92,9 +92,8 @@ body {
 }
 
 .selecting {
-  border-radius: 2rem;
   width: 100%;
-  height: 3rem;
+  height: 70%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -282,8 +281,7 @@ body {
   }
 
   .selecting {
-    width: 90%;
-    padding: 15px;
+    width: 100%;
   }
   .table th,
   .table td {
@@ -300,13 +298,9 @@ body {
 }
 
 .tournamentButton {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  padding: 10px;
+
   font-size: 0.7rem;
-  color: whitesmoke;
-  font-family: "Noto Nastaliq Urdu", serif;
+
 }
 
 .activeButton {
