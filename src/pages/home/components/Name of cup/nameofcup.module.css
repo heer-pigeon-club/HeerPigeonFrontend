@@ -101,13 +101,11 @@ body {
 }
 .winnerSection {
   width: 100%;
-  color: whitesmoke;
   height: 2rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: lightsalmon;
   font-family: "Noto Nastaliq Urdu", serif;
 }
 
@@ -324,6 +322,9 @@ body {
 .table thead tr th
 {
   height: 25px;
+  font-family: "Noto Nastaliq Urdu", serif;
+
+  
 }
 }
 

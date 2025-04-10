@@ -329,33 +329,7 @@ const NameOfCup = () => {
           ))}
         </p>
       </div>
-      {selectedDate && selectedDate !== "total" && (
-        <div className={s.winnerSection}>
-          {firstWinner && (
-            <div className={s.firstWinnerSection}>
-              <h5>🏆 First Winner</h5>
-              <p>
-                {firstWinner.name} :
-                {firstWinner.firstPigeonEndTime
-                  ? firstWinner.firstPigeonEndTime.toLocaleString()
-                  : "Not available"}{" "}
-              </p>
-            </div>
-          )}
-
-          {lastWinner && (
-            <div className={s.LastWinnerSection}>
-              <h5>🥈 Last Winner</h5>
-              <p>
-                {lastWinner.name} :
-                {lastWinner.lastWinnerEndTime
-                  ? lastWinner.lastWinnerEndTime.toLocaleString()
-                  : "Not available"}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+     
      
       <div className={s.tournamentBox}>
      
@@ -408,6 +382,33 @@ const NameOfCup = () => {
             </>
           )}
       </div>
+      {selectedDate && selectedDate !== "total" && (
+        <div className={s.winnerSection}>
+          {firstWinner && (
+            <div className={s.firstWinnerSection}>
+              <h5>🏆 First Winner</h5>
+              <p>
+                {firstWinner.name} :
+                {firstWinner.firstPigeonEndTime
+                  ? firstWinner.firstPigeonEndTime.toLocaleString()
+                  : "Not available"}{" "}
+              </p>
+            </div>
+          )}
+
+          {lastWinner && (
+            <div className={s.LastWinnerSection}>
+              <h5>🥈 Last Winner</h5>
+              <p>
+                {lastWinner.name} :
+                {lastWinner.lastWinnerEndTime
+                  ? lastWinner.lastWinnerEndTime.toLocaleString()
+                  : "Not available"}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
       <div className={s.participant}>
         <table className={s.table}>
           <thead>
