@@ -321,7 +321,10 @@ body {
 .winnerSection {
   font-size: 0.7rem;
 }
-
+.table thead tr th
+{
+  height: 25px;
+}
 }
 
 

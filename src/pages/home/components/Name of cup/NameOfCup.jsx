@@ -428,7 +428,7 @@ const NameOfCup = () => {
                   {[...Array(maxPigeons).keys()].map((i) => (
                     <th key={i}>Pigeon {i + 1}</th>
                   ))}
-                  <th>Flying Time </th>
+                  <th>Total </th>
                 </>
               )}
             </tr>
