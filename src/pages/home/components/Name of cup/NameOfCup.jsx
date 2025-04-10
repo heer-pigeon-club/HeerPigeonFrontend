@@ -278,7 +278,13 @@ const NameOfCup = () => {
   return (
     <div className={s.container}>
       <div className={s.controls}>
+      <div className={s.routing}>
         <NavLink className={s.navBtn}>Home</NavLink>
+
+        <NavLink className={s.navBtn} to="/tournament">Other</NavLink>
+        <NavLink className={s.navBtn} to="/weather">Weather</NavLink>
+        <NavLink className={s.navBtn} to="/contact">Contact</NavLink>
+        </div>
         <div className={s.selecting}>
           <div className={s.tournamentButtons}>
             {tournaments.length > 0 ? (
@@ -311,9 +317,7 @@ const NameOfCup = () => {
          
           
         </div>
-        <NavLink className={s.navBtn} to="/tournament">Other</NavLink>
-        <NavLink className={s.navBtn} to="/weather">Weather</NavLink>
-        <NavLink className={s.navBtn} to="/contact">Contact</NavLink>
+            
 
       </div>
       <div className={s.newsbox}>
