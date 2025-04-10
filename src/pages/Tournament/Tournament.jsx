@@ -7,7 +7,10 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 const Tournament = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-
+  const handleCopyLink = (id) => {
+    const link = `https://heerflyingclub.com/${id}`;
+    navigator.clipboard.writeText(link).then(() => {});
+  };
   useEffect(() => {
     fetchTournaments();
   }, []);
@@ -27,6 +30,7 @@ const Tournament = () => {
             <th>Tournament</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Copy Link</th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +44,16 @@ const Tournament = () => {
               <td>{tournament.name}</td>
               <td>{tournament.startDate}</td>
               <td>{tournament.endDate}</td>
+              <td>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCopyLink(tournament._id);
+                  }}
+                >
+                  Copy Link
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
