@@ -36,7 +36,10 @@ function App() {
                 <Events />
 
                 <Routes>
+                  
                   <Route path="/" element={<NameOfCup />} />
+                  <Route path="/:id" element={<NameOfCup />} />
+
                   <Route path="/weather" element={<Weather />} />
                   <Route path="/tournament" element={<Tournament />} />
                   <Route path="/contact" element={<Contact />} />
