@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import style from "./nameofcup.module.css";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import Navbar from "../NavBar/Navbar";
+import Navbar from "./NavBar";
 const s = style;
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const NameOfCup = () => {

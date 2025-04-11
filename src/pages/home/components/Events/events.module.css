@@ -5,7 +5,7 @@
   align-items: center;
   position: relative;
   height: 10rem;
-  align-items:center;
+  align-items: center;
 }
 
 .carousel {
@@ -17,8 +17,8 @@
   display: flex;
   justify-content: center;
   height: 100%;
+  position: relative;
 }
-
 
 .slide {
   width: fit-content;
@@ -36,10 +36,39 @@
   border-radius: 8px;
 }
 
-@media (max-width: 600px)
-{
-  .container 
-  {
+.arrowLeft,
+.arrowRight {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.arrowLeft {
+  left: 1rem;
+}
+
+.arrowRight {
+  right: 1rem;
+}
+
+.arrowLeft:hover,
+.arrowRight:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 600px) {
+  .container {
     height: 7rem;
     width: 100%;
   }

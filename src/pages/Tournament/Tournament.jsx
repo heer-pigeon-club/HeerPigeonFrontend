@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./Tournament.module.css";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../home/components/Name of cup/NavBar";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 const Tournament = () => {
@@ -23,6 +24,7 @@ const Tournament = () => {
   };
   return (
     <div className={styles.table}>
+      
       <table className={styles.tournamentTable}>
         <thead>
           <tr>

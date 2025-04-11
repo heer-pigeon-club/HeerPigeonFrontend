@@ -51,6 +51,17 @@ const Events = () => {
     touchEndX.current = null;
   };
 
+  // Automatic sliding every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === posts.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000); // Slide every 3 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [posts]);
+
   return (
     <div className={s.container}>
       {posts.length > 0 && (
@@ -60,6 +71,19 @@ const Events = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
+          {/* Left Arrow */}
+          <button
+            className={s.arrowLeft}
+            onClick={() =>
+              setCurrentIndex((prevIndex) =>
+                prevIndex === 0 ? posts.length - 1 : prevIndex - 1
+              )
+            }
+          >
+            &#8592;
+          </button>
+
+          {/* Image Slide */}
           <div className={s.slide}>
             <img
               src={posts[currentIndex].imageUrl}
@@ -67,6 +91,18 @@ const Events = () => {
               className={s.eventImage}
             />
           </div>
+
+          {/* Right Arrow */}
+          <button
+            className={s.arrowRight}
+            onClick={() =>
+              setCurrentIndex((prevIndex) =>
+                prevIndex === posts.length - 1 ? 0 : prevIndex + 1
+              )
+            }
+          >
+            &#8594;
+          </button>
         </div>
       )}
     </div>
